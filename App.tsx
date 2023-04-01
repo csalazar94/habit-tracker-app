@@ -61,7 +61,7 @@ const AppDrawer = () => {
 };
 
 const AppStack = () => {
-  const isAuthenticated = true;
+  const isAuthenticated = false;
 
   return (
     <NavigationContainer>
