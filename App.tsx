@@ -14,6 +14,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import HelpScreen from './src/screens/help';
 import ConfigurationScreen from './src/screens/configuration';
 import StatisticsScreen from './src/screens/statistics';
+import { Provider } from 'react-native-paper';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -64,22 +65,24 @@ const AppStack = () => {
   const isAuthenticated = true;
 
   return (
-    <NavigationContainer>
-      {
-        isAuthenticated ? (
-          <>
-            <AppDrawer />
-          </>
-        ) : (
-          <>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Inicio de sesión" component={LoginScreen} />
-              <Stack.Screen name="Registro" component={RegisterScreen} />
-            </Stack.Navigator>
-          </>
-        )
-      }
-    </NavigationContainer>
+    <Provider>
+      <NavigationContainer>
+        {
+          isAuthenticated ? (
+            <>
+              <AppDrawer />
+            </>
+          ) : (
+            <>
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Inicio de sesión" component={LoginScreen} />
+                <Stack.Screen name="Registro" component={RegisterScreen} />
+              </Stack.Navigator>
+            </>
+          )
+        }
+      </NavigationContainer>
+    </Provider>
   );
 };
 
