@@ -48,6 +48,9 @@ export default function HabitCard({ habit }) {
       case 'weekly':
         suffix = 'a la semana';
         break;
+      case 'monthly':
+        suffix = 'al mes';
+        break;
     }
     let unit;
     switch (habit.unit) {

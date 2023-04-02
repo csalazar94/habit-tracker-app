@@ -4,16 +4,17 @@ import { TextInput, Text, Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import DropDown from 'react-native-paper-dropdown';
 import { ScrollView } from 'react-native-gesture-handler';
+import HabitCard from '../components/habit-card';
 
 const AddHabitScreen = () => {
-  const [habitName, setHabitName] = useState('');
+  const [habitName, setHabitName] = useState('Hábito');
   const [showDropDownFreq, setShowDropDownFreq] = useState(false);
-  const [frequency, setFrequency] = useState('Diario');
+  const [frequency, setFrequency] = useState('daily');
   const [showDropDownUnits, setShowDropDownUnits] = useState(false);
-  const [unit, setUnit] = useState('Veces');
+  const [unit, setUnit] = useState('times');
   const [showDropDownCategory, setShowDropDownCategory] = useState(false);
   const [category, setCategory] = useState('Salud');
-  const [goal, setGoal] = useState('');
+  const [target, setTarget] = useState('10');
 
   const frequencies = [
     {
@@ -64,13 +65,19 @@ const AddHabitScreen = () => {
     scrollContainer: {
       flexGrow: 1,
       gap: 10,
-      justifyContent: 'center',
     },
   });
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <HabitCard habit={{
+          name: habitName,
+          frequency,
+          unit,
+          target,
+          progress: 0.75,
+        }}/>
         <Text variant='titleLarge'>Crear hábito</Text>
         <DropDown
           label='Categoría'
@@ -90,8 +97,8 @@ const AddHabitScreen = () => {
         />
         <TextInput
           mode="outlined"
-          value={goal}
-          onChangeText={setGoal}
+          value={target}
+          onChangeText={setTarget}
           keyboardType="numeric"
           label="Objetivo"
         />
@@ -115,7 +122,8 @@ const AddHabitScreen = () => {
           setValue={setFrequency}
           list={frequencies}
         />
-        <Button mode='contained' onPress={onSave}>Save</Button>
+        <Button mode='contained' onPress={onSave}>Guardar</Button>
+        <Button mode='outlined' onPress={() => navigation.goBack()}>Volver</Button>
       </ScrollView>
     </View>
   );
