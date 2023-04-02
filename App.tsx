@@ -14,7 +14,27 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import HelpScreen from './src/screens/help';
 import ConfigurationScreen from './src/screens/configuration';
 import StatisticsScreen from './src/screens/statistics';
-import { Provider } from 'react-native-paper';
+import { adaptNavigationTheme, Provider, useTheme } from 'react-native-paper';
+import {
+  DarkTheme as NavigationDarkTheme,
+  DefaultTheme as NavigationDefaultTheme,
+} from '@react-navigation/native';
+import {
+  MD3DarkTheme,
+  MD3LightTheme,
+} from 'react-native-paper';
+import merge from 'deepmerge';
+
+const {
+  LightTheme,
+  // DarkTheme
+} = adaptNavigationTheme({
+  reactNavigationLight: NavigationDefaultTheme,
+  // reactNavigationDark: NavigationDarkTheme,
+});
+
+const CombinedDefaultTheme = merge(MD3LightTheme, LightTheme);
+// const CombinedDarkTheme = merge(MD3DarkTheme, DarkTheme);
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -47,16 +67,21 @@ const GoalsStack = () => {
 };
 
 const AppDrawer = () => {
+  const theme = useTheme();
+  const screenOptions = {
+    headerTintColor: theme.colors.primary,
+  };
+
   return (
     <Drawer.Navigator>
-      <Drawer.Screen name="Inicio" component={HomeScreen} />
-      <Drawer.Screen name="Estadísticas" component={StatisticsScreen} />
-      <Drawer.Screen name="Hábitos" component={HabitsStack} />
-      <Drawer.Screen name="Objetivos" component={GoalsStack} />
-      <Drawer.Screen name="Recordatorios" component={RemindersStack} />
-      <Drawer.Screen name="Perfil" component={ProfileScreen} />
-      <Drawer.Screen name="Configuración" component={ConfigurationScreen} />
-      <Drawer.Screen name="Ayuda" component={HelpScreen} />
+      <Drawer.Screen options={screenOptions} name="Inicio" component={HomeScreen} />
+      <Drawer.Screen options={screenOptions} name="Estadísticas" component={StatisticsScreen} />
+      <Drawer.Screen options={screenOptions} name="Hábitos" component={HabitsStack} />
+      <Drawer.Screen options={screenOptions} name="Objetivos" component={GoalsStack} />
+      <Drawer.Screen options={screenOptions} name="Recordatorios" component={RemindersStack} />
+      <Drawer.Screen options={screenOptions} name="Perfil" component={ProfileScreen} />
+      <Drawer.Screen options={screenOptions} name="Configuración" component={ConfigurationScreen} />
+      <Drawer.Screen options={screenOptions} name="Ayuda" component={HelpScreen} />
     </Drawer.Navigator>
   );
 };
@@ -65,8 +90,8 @@ const AppStack = () => {
   const isAuthenticated = true;
 
   return (
-    <Provider>
-      <NavigationContainer>
+    <Provider theme={CombinedDefaultTheme}>
+      <NavigationContainer theme={CombinedDefaultTheme}>
         {
           isAuthenticated ? (
             <>
