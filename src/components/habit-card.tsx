@@ -1,8 +1,8 @@
-import { Avatar, Button, Card, IconButton, ProgressBar, Text, useTheme } from "react-native-paper";
+import { Avatar, Card, ProgressBar, Text } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
+import { Switch } from "react-native-gesture-handler";
 
 export default function HabitCard({ habit }) {
-  const theme = useTheme();
 
   const styles = StyleSheet.create({
     container: {
@@ -30,8 +30,10 @@ export default function HabitCard({ habit }) {
       marginBottom: 5,
     },
     actionsContainer: {
+      marginTop: 10,
       flexDirection: 'row',
       justifyContent: 'flex-end',
+      alignItems: 'center',
     },
     progress: {
       height: 10,
@@ -85,8 +87,7 @@ export default function HabitCard({ habit }) {
             <Text style={styles.targetText}>{getTargetText()}</Text>
             <ProgressBar style={styles.progress} progress={habit.progress} />
             <View style={styles.actionsContainer}>
-              <IconButton iconColor={theme.colors.primary} size={20} icon="pencil" onPress={() => { }} />
-              <IconButton iconColor={theme.colors.error} size={20} icon="trash-can" onPress={() => { }} />
+              <Switch value={habit.done} onValueChange={() => { }} />
             </View>
           </View>
         </View>

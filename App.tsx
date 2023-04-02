@@ -72,13 +72,14 @@ const AppDrawer = () => {
     headerTintColor: theme.colors.primary,
   };
 
+  // <Drawer.Screen options={screenOptions} name="Estadísticas" component={StatisticsScreen} />
+  // <Drawer.Screen options={screenOptions} name="Objetivos" component={GoalsStack} />
+  // <Drawer.Screen options={screenOptions} name="Recordatorios" component={RemindersStack} />
+
   return (
     <Drawer.Navigator>
       <Drawer.Screen options={screenOptions} name="Inicio" component={HomeScreen} />
-      <Drawer.Screen options={screenOptions} name="Estadísticas" component={StatisticsScreen} />
       <Drawer.Screen options={screenOptions} name="Hábitos" component={HabitsStack} />
-      <Drawer.Screen options={screenOptions} name="Objetivos" component={GoalsStack} />
-      <Drawer.Screen options={screenOptions} name="Recordatorios" component={RemindersStack} />
       <Drawer.Screen options={screenOptions} name="Perfil" component={ProfileScreen} />
       <Drawer.Screen options={screenOptions} name="Configuración" component={ConfigurationScreen} />
       <Drawer.Screen options={screenOptions} name="Ayuda" component={HelpScreen} />

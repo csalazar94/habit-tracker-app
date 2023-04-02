@@ -1,4 +1,4 @@
-import { Button, IconButton, Text, useTheme } from "react-native-paper";
+import { Button, IconButton, useTheme } from "react-native-paper";
 import { StyleSheet, View, VirtualizedList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import HabitCard from "../components/habit-card";
@@ -13,6 +13,7 @@ export default function HabitsScreen() {
       target: 3,
       current: 2,
       progress: 2 / 3,
+      done: true,
     },
     {
       id: 2,
@@ -22,6 +23,7 @@ export default function HabitsScreen() {
       target: 5,
       current: 3,
       progress: 3 / 5,
+      done: true,
     },
     {
       id: 3,
@@ -31,6 +33,7 @@ export default function HabitsScreen() {
       target: 2,
       current: 1,
       progress: 1 / 2,
+      done: false,
     },
     {
       id: 4,
@@ -40,6 +43,7 @@ export default function HabitsScreen() {
       target: 100,
       current: 30,
       progress: 30 / 100,
+      done: false,
     },
     {
       id: 5,
@@ -49,6 +53,7 @@ export default function HabitsScreen() {
       target: 3,
       current: 2,
       progress: 2 / 3,
+      done: true,
     },
     {
       id: 6,
@@ -58,6 +63,7 @@ export default function HabitsScreen() {
       target: 5,
       current: 3,
       progress: 3 / 5,
+      done: true,
     },
     {
       id: 7,
@@ -67,6 +73,7 @@ export default function HabitsScreen() {
       target: 2,
       current: 1,
       progress: 1 / 2,
+      done: true,
     },
     {
       id: 8,
@@ -76,6 +83,7 @@ export default function HabitsScreen() {
       target: 10000000000000000,
       current: 30,
       progress: 30 / 100,
+      done: false,
     },
     {
       id: 9,
@@ -85,6 +93,7 @@ export default function HabitsScreen() {
       target: 5,
       current: 3,
       progress: 3 / 5,
+      done: true,
     },
     {
       id: 10,
@@ -94,6 +103,7 @@ export default function HabitsScreen() {
       target: 2,
       current: 1,
       progress: 1 / 2,
+      done: false,
     },
     {
       id: 11,
@@ -103,6 +113,7 @@ export default function HabitsScreen() {
       target: 100,
       current: 30,
       progress: 30 / 100,
+      done: true,
     }
   ];
 
