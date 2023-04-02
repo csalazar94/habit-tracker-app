@@ -20,7 +20,7 @@ const Drawer = createDrawerNavigator();
 
 const HabitsStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Lista de hábitos" component={HabitsScreen} />
       <Stack.Screen name="Añadir hábito" component={AddHabitScreen} />
     </Stack.Navigator>
@@ -61,7 +61,7 @@ const AppDrawer = () => {
 };
 
 const AppStack = () => {
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   return (
     <NavigationContainer>
