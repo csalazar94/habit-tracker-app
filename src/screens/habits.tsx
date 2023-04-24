@@ -2,6 +2,7 @@ import { Button, IconButton, useTheme } from "react-native-paper";
 import { StyleSheet, View, VirtualizedList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import HabitCard from "../components/habit-card";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function HabitsScreen() {
   const habits = [
@@ -131,18 +132,30 @@ export default function HabitsScreen() {
       bottom: 20,
       right: 20,
     },
+    itemContainer: {
+      paddingHorizontal: 20,
+    },
   });
 
   return (
     <View style={styles.container}>
       <VirtualizedList
-        renderItem={({ item }) => <HabitCard habit={item} />}
+        renderItem={({ item }) => {
+          return (
+            <TouchableOpacity 
+              style={styles.itemContainer}
+              onPress={() => navigation.navigate('Hábito', { habit: item })}
+            >
+              <HabitCard habit={item} />
+            </TouchableOpacity>
+          );
+        }}
         data={habits}
         keyExtractor={(item) => item.id}
         getItemCount={(data) => data.length}
         getItem={(data, index) => data[index]}
-        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-        ListHeaderComponent={() => <View style={{ height: 10 }} />}
+        ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
+        ListHeaderComponent={() => <View style={{ height: 15 }} />}
         ListFooterComponent={() => <View style={{ height: 110 }} />}
       />
       <IconButton

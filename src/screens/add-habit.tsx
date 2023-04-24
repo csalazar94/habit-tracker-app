@@ -71,13 +71,16 @@ const AddHabitScreen = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <HabitCard habit={{
-          name: habitName,
-          frequency,
-          unit,
-          target,
-          progress: 0.75,
-        }}/>
+        <HabitCard
+          habit={{
+            name: habitName,
+            frequency,
+            unit,
+            target,
+            progress: Math.random(),
+          }}
+          disabled={true}
+        />
         <Text variant='titleLarge'>Crear hábito</Text>
         <DropDown
           label='Categoría'

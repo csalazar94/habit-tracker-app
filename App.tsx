@@ -24,6 +24,7 @@ import {
   MD3LightTheme,
 } from 'react-native-paper';
 import merge from 'deepmerge';
+import HabitScreen from './src/screens/habit';
 
 const {
   LightTheme,
@@ -44,6 +45,10 @@ const HabitsStack = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Lista de hábitos" component={HabitsScreen} />
       <Stack.Screen name="Añadir hábito" component={AddHabitScreen} />
+      <Stack.Screen 
+        name="Hábito"
+        component={HabitScreen}
+      />
     </Stack.Navigator>
   );
 };
