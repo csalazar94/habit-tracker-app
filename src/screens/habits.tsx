@@ -1,10 +1,10 @@
-import { Button, IconButton, useTheme } from "react-native-paper";
+import { IconButton, useTheme } from "react-native-paper";
 import { StyleSheet, View, VirtualizedList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import HabitCard from "../components/habit-card";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Habit, HabitsProps } from "../types/screens";
 
-export default function HabitsScreen() {
+export default function HabitsScreen({ navigation }: HabitsProps) {
   const habits = [
     {
       id: 1,
@@ -81,7 +81,7 @@ export default function HabitsScreen() {
       name: 'Habit 8',
       frequency: 'daily',
       unit: 'pages',
-      target: 10000000000000000,
+      target: 1000,
       current: 30,
       progress: 30 / 100,
       done: false,
@@ -119,7 +119,6 @@ export default function HabitsScreen() {
   ];
 
   const theme = useTheme();
-  const navigation = useNavigation();
 
   const styles = StyleSheet.create({
     container: {
@@ -140,20 +139,20 @@ export default function HabitsScreen() {
   return (
     <View style={styles.container}>
       <VirtualizedList
-        renderItem={({ item }) => {
+        renderItem={({ item }: { item: Habit }) => {
           return (
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.itemContainer}
-              onPress={() => navigation.navigate('Hábito', { habit: item })}
+              onPress={() => navigation.navigate('Habit', { habit: item })}
             >
               <HabitCard habit={item} />
             </TouchableOpacity>
           );
         }}
         data={habits}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => String(item.id)}
         getItemCount={(data) => data.length}
-        getItem={(data, index) => data[index]}
+        getItem={(data, index): Habit => data[index]}
         ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
         ListHeaderComponent={() => <View style={{ height: 15 }} />}
         ListFooterComponent={() => <View style={{ height: 110 }} />}
@@ -164,7 +163,7 @@ export default function HabitsScreen() {
         iconColor={theme.colors.inversePrimary}
         containerColor={theme.colors.primary}
         style={styles.button}
-        onPress={() => { navigation.navigate('Añadir hábito') }}
+        onPress={() => { navigation.navigate('AddHabit') }}
       />
     </View>
   );

@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Button, TextInput, Text, useTheme } from 'react-native-paper';
+import { RegisterProps } from '../types/screens';
 
 
-const RegisterScreen = () => {
+export default function RegisterScreen({ navigation }: RegisterProps) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -13,7 +14,6 @@ const RegisterScreen = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
   const theme = useTheme();
-  const navigation = useNavigation();
 
   const handleLogin = () => {
   };
@@ -115,7 +115,7 @@ const RegisterScreen = () => {
           Crear cuenta
         </Button>
         <TouchableOpacity
-          onPress={() => { }}
+          onPress={() => { navigation.navigate('Login') }}
         >
           <Text variant='labelLarge' style={styles.link}>¿Ya tienes una cuenta?</Text>
         </TouchableOpacity>
@@ -123,8 +123,5 @@ const RegisterScreen = () => {
       </ScrollView>
     </View>
   );
-
 };
 
-
-export default RegisterScreen;

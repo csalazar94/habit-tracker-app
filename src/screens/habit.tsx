@@ -1,7 +1,7 @@
 import { Button, Text, useTheme } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
+import { HabitProps } from "../types/screens";
 
 LocaleConfig.locales['es'] = {
   monthNames: [
@@ -25,10 +25,9 @@ LocaleConfig.locales['es'] = {
 };
 LocaleConfig.defaultLocale = 'es';
 
-export default function HabitScreen() {
-  const { habit } = useRoute().params;
+export default function HabitScreen({ route, navigation }: HabitProps) {
+  const { habit } = route.params;
 
-  const navigation = useNavigation();
   const theme = useTheme();
 
   const calendarTheme = {

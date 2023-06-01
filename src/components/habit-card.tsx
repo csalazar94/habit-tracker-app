@@ -1,11 +1,9 @@
 import { Avatar, Card, ProgressBar, Text } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
-import { Switch } from "react-native-gesture-handler";
-import { Calendar } from "react-native-calendars";
 import LastNDays from "./last-n-days";
+import { Habit } from "../types/screens";
 
-export default function HabitCard({ habit, disabled = false }) {
-
+export default function HabitCard({ habit }: { habit: Habit }) {
   const styles = StyleSheet.create({
     container: {
       margin: 3,

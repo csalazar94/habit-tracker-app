@@ -1,15 +1,14 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Button, TextInput, Text, useTheme } from 'react-native-paper';
+import { LoginProps } from '../types/screens';
 
-const LoginScreen = () => {
+export default function LoginScreen({ navigation }: LoginProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const theme = useTheme();
-  const navigation = useNavigation();
 
   const handleLogin = () => {
   };
@@ -38,13 +37,8 @@ const LoginScreen = () => {
     button: {
       marginBottom: 20,
     },
-    registerContainer: {
-      flexDirection: 'row',
-      gap: 5,
-    },
     link: {
       color: theme.colors.primary,
-      marginBottom: 20,
     },
   });
 
@@ -73,14 +67,12 @@ const LoginScreen = () => {
         <Button mode="contained" onPress={handleLogin} style={styles.button}>
           Iniciar sesión
         </Button>
-        <View style={styles.registerContainer}>
-          <Text>¿No tienes una cuenta?</Text>
-          <TouchableOpacity
-            onPress={() => { navigation.navigate('Registro') }}
-          >
-            <Text variant='labelLarge' style={styles.link}>Crea tu cuenta</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          onPress={() => { navigation.navigate('Register') }}
+        >
+          <Text variant='labelLarge' style={styles.link}>Crea tu cuenta</Text>
+        </TouchableOpacity>
+        <View style={{ height: 10 }}></View>
         <TouchableOpacity
           onPress={() => { }}
         >
@@ -90,8 +82,5 @@ const LoginScreen = () => {
       </ScrollView>
     </View >
   );
-
 };
 
-
-export default LoginScreen;

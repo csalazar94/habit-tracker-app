@@ -1,10 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HabitsScreen from './src/screens/habits';
-import AddHabitScreen from './src/screens/add-habit';
-import ProfileScreen from './src/screens/profile';
-import LoginScreen from './src/screens/login';
-import RegisterScreen from './src/screens/register';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { adaptNavigationTheme, Provider, useTheme } from 'react-native-paper';
 import {
@@ -14,7 +9,13 @@ import {
   MD3LightTheme,
 } from 'react-native-paper';
 import merge from 'deepmerge';
+import HabitsScreen from './src/screens/habits';
+import AddHabitScreen from './src/screens/add-habit';
+import ProfileScreen from './src/screens/profile';
+import LoginScreen from './src/screens/login';
+import RegisterScreen from './src/screens/register';
 import HabitScreen from './src/screens/habit';
+import { AppDrawerParamList, AuthStackParamList, HabitsStackParamList } from './src/types/screens';
 
 const {
   LightTheme,
@@ -24,19 +25,26 @@ const {
 
 const CombinedDefaultTheme = merge(MD3LightTheme, LightTheme);
 
-const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
+const HabitsStackNavigator = createStackNavigator<HabitsStackParamList>();
+const AuthStackNavigator = createStackNavigator<AuthStackParamList>();
+const AppDrawerNavigator = createDrawerNavigator<AppDrawerParamList>();
 
 const HabitsStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Lista de hábitos" component={HabitsScreen} />
-      <Stack.Screen name="Añadir hábito" component={AddHabitScreen} />
-      <Stack.Screen 
-        name="Hábito"
-        component={HabitScreen}
-      />
-    </Stack.Navigator>
+    <HabitsStackNavigator.Navigator screenOptions={{ headerShown: false }}>
+      <HabitsStackNavigator.Screen name="Habits" component={HabitsScreen} />
+      <HabitsStackNavigator.Screen name="AddHabit" component={AddHabitScreen} />
+      <HabitsStackNavigator.Screen name="Habit" component={HabitScreen} />
+    </HabitsStackNavigator.Navigator>
+  );
+};
+
+const AuthStack = () => {
+  return (
+    <AuthStackNavigator.Navigator screenOptions={{ headerShown: false }}>
+      <AuthStackNavigator.Screen name="Login" component={LoginScreen} />
+      <AuthStackNavigator.Screen name="Register" component={RegisterScreen} />
+    </AuthStackNavigator.Navigator>
   );
 };
 
@@ -47,31 +55,24 @@ const AppDrawer = () => {
   };
 
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen options={screenOptions} name="Hábitos" component={HabitsStack} />
-      <Drawer.Screen options={screenOptions} name="Perfil" component={ProfileScreen} />
-    </Drawer.Navigator>
+    <AppDrawerNavigator.Navigator>
+      <AppDrawerNavigator.Screen options={screenOptions} name="Hábitos" component={HabitsStack} />
+      <AppDrawerNavigator.Screen options={screenOptions} name="Perfil" component={ProfileScreen} />
+    </AppDrawerNavigator.Navigator>
   );
 };
 
-const AppStack = () => {
-  const isAuthenticated = true;
+const App = () => {
+  const isAuthenticated = false;
 
   return (
     <Provider theme={CombinedDefaultTheme}>
       <NavigationContainer theme={CombinedDefaultTheme}>
         {
           isAuthenticated ? (
-            <>
-              <AppDrawer />
-            </>
+            <AppDrawer />
           ) : (
-            <>
-              <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Inicio de sesión" component={LoginScreen} />
-                <Stack.Screen name="Registro" component={RegisterScreen} />
-              </Stack.Navigator>
-            </>
+            <AuthStack />
           )
         }
       </NavigationContainer>
@@ -79,5 +80,5 @@ const AppStack = () => {
   );
 };
 
-export default AppStack;
+export default App;
 

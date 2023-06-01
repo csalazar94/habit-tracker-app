@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TextInput, Text, Button } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
 import DropDown from 'react-native-paper-dropdown';
 import { ScrollView } from 'react-native-gesture-handler';
 import HabitCard from '../components/habit-card';
+import { AddHabitProps } from '../types/screens';
 
-const AddHabitScreen = () => {
+export default function AddHabitScreen({ navigation }: AddHabitProps) {
   const [habitName, setHabitName] = useState('Hábito');
-  const [showDropDownFreq, setShowDropDownFreq] = useState(false);
+  const [showDropDownFrequency, setShowDropDownFrequency] = useState(false);
   const [frequency, setFrequency] = useState('daily');
   const [showDropDownUnits, setShowDropDownUnits] = useState(false);
   const [unit, setUnit] = useState('times');
@@ -51,8 +51,6 @@ const AddHabitScreen = () => {
     }
   ];
 
-  const navigation = useNavigation();
-
   const onSave = () => {
     navigation.goBack();
   };
@@ -76,10 +74,11 @@ const AddHabitScreen = () => {
             name: habitName,
             frequency,
             unit,
-            target,
+            target: Number(target),
             progress: Math.random(),
+            current: Math.random(),
+            done: true,
           }}
-          disabled={true}
         />
         <Text variant='titleLarge'>Crear hábito</Text>
         <DropDown
@@ -118,9 +117,9 @@ const AddHabitScreen = () => {
         <DropDown
           label='Frecuencia'
           mode='outlined'
-          visible={showDropDownFreq}
-          showDropDown={() => setShowDropDownFreq(true)}
-          onDismiss={() => setShowDropDownFreq(false)}
+          visible={showDropDownFrequency}
+          showDropDown={() => setShowDropDownFrequency(true)}
+          onDismiss={() => setShowDropDownFrequency(false)}
           value={frequency}
           setValue={setFrequency}
           list={frequencies}
@@ -132,4 +131,3 @@ const AddHabitScreen = () => {
   );
 };
 
-export default AddHabitScreen;
