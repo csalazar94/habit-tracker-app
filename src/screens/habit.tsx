@@ -51,10 +51,10 @@ export default function HabitScreen() {
     textMonthFontFamily: theme.fonts.titleMedium.fontFamily,
     textDayHeaderFontFamily: theme.fonts.titleMedium.fontFamily,
     textDayFontWeight: theme.fonts.titleMedium.fontWeight,
-    textMonthFontWeight: 'bold',
+    textMonthFontWeight: theme.fonts.titleMedium.fontWeight,
     textDayHeaderFontWeight: theme.fonts.titleMedium.fontWeight,
     textDayFontSize: theme.fonts.bodyLarge.fontSize,
-    textMonthFontSize: theme.fonts.titleMedium.fontSize,
+    textMonthFontSize: theme.fonts.titleLarge.fontSize,
     textDayHeaderFontSize: theme.fonts.bodyLarge.fontSize,
   };
   const customMarkingStyle = {
@@ -84,9 +84,9 @@ export default function HabitScreen() {
         theme={calendarTheme}
         markingType='custom'
         markedDates={{
-          '2023-04-03': customMarkingStyle,
-          '2023-04-05': customMarkingStyle,
-          '2023-04-06': customMarkingStyle,
+          '2023-05-03': customMarkingStyle,
+          '2023-05-05': customMarkingStyle,
+          '2023-05-06': customMarkingStyle,
         }}
       />
       <Button onPress={() => navigation.goBack()} mode="contained">Volver</Button>

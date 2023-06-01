@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.xtrot.habit-tracker-app"
     },
     "android": {
       "adaptiveIcon": {
