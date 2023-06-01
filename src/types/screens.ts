@@ -28,10 +28,10 @@ type LoginProps = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 type RegisterProps = NativeStackScreenProps<AuthStackParamList, 'Register'>;
 
 type AppDrawerParamList = {
-  Habits: undefined;
+  HabitsDrawer: undefined;
   Profile: undefined;
-};
-type AppDrawerHabitsProps = NativeStackScreenProps<AppDrawerParamList, 'Habits'>;
+  };
+type AppDrawerHabitsProps = NativeStackScreenProps<AppDrawerParamList, 'HabitsDrawer'>;
 type AppDrawerProfileProps = NativeStackScreenProps<AppDrawerParamList, 'Profile'>;
 
 export type {

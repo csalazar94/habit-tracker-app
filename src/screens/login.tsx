@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Button, TextInput, Text, useTheme } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { loginStart } from '../storage/user/reducer';
 import { LoginProps } from '../types/screens';
 
 export default function LoginScreen({ navigation }: LoginProps) {
@@ -10,7 +12,10 @@ export default function LoginScreen({ navigation }: LoginProps) {
 
   const theme = useTheme();
 
+  const dispatch = useDispatch();
+
   const handleLogin = () => {
+    dispatch(loginStart({ email, password }));
   };
 
   const styles = StyleSheet.create({
