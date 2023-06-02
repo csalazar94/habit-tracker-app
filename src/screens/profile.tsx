@@ -3,6 +3,8 @@ import { StyleSheet, View } from "react-native";
 import { useState } from "react";
 import DatePicker from "react-native-date-picker";
 import DropDown from "react-native-paper-dropdown";
+import { RootState } from "../storage/store";
+import { useSelector } from "react-redux";
 
 const styles = StyleSheet.create({
   formContainer: {
@@ -13,10 +15,16 @@ const styles = StyleSheet.create({
 });
 
 export default function ProfileScreen() {
-  const [gender, setGender] = useState("");
+  const { user } = useSelector((state: RootState) => state.user);
+  const [firstName, setFirstName] = useState(user?.firstName || '');
+  const [lastName, setLastName] = useState(user?.lastName || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [gender, setGender] = useState(user?.gender || '');
   const [showGenderDropdown, setShowGenderDropdown] = useState(false);
   const [open, setOpen] = useState(false);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(user?.dob || new Date());
+  const [weight, setWeight] = useState(user?.weight || 0);
+  const [height, setHeight] = useState(user?.height || 0);
 
   const genderOptions = [
     {
@@ -38,14 +46,20 @@ export default function ProfileScreen() {
       <TextInput
         mode="outlined"
         label={'Nombre'}
+        value={firstName}
+        onChangeText={(text) => setFirstName(text)}
       />
       <TextInput
         mode="outlined"
         label={'Apellido'}
+        value={lastName}
+        onChangeText={(text) => setLastName(text)}
       />
       <TextInput
         mode="outlined"
         label={'Email'}
+        value={email}
+        onChangeText={(text) => setEmail(text)}
       />
       <DropDown
         label='Género'
@@ -76,14 +90,18 @@ export default function ProfileScreen() {
         onCancel={() => setOpen(false)}
       />
       <TextInput
-        label={'Peso'}
+        label={'Peso (kg)'}
         keyboardType="numeric"
         mode='outlined'
+        value={weight.toString()}
+        onChangeText={(text) => setWeight(Number(text.replace(/[^0-9]/g, '')))}
       />
       <TextInput
-        label={'Altura'}
+        label={'Altura (cms)'}
         keyboardType="numeric"
         mode='outlined'
+        value={height.toString()}
+        onChangeText={(text) => setHeight(Number(text.replace(/[^0-9]/g, '')))}
       />
       <Button
         mode={'contained'}
