@@ -25,7 +25,25 @@ async function register(firstName: string, lastName: string, email: string, pass
   throw new Error('Register failed');
 }
 
+async function update(userId: number, firstName: string, lastName: string, gender: string, dob: string, weight: number, height: number): Promise<User> {
+  const response = await fetch(`http://192.168.100.45:5500/users/${userId}`, {
+    method: 'PATCH',
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      firstName,
+      lastName,
+      gender,
+      dob,
+      weight,
+      height,
+    }),
+  });
+  if (response.ok) return response.json();
+  throw new Error('Update user failed');
+}
+
 export default {
   login,
   register,
+  update,
 };

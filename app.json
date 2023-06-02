@@ -22,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.xtrot.habittrackerapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"

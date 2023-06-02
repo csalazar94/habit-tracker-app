@@ -19,10 +19,12 @@ const initialState: {
   user: User | null,
   loginStatus: string,
   registerStatus: string,
+  updateStatus: string,
 } = {
   user: null,
   loginStatus: '',
   registerStatus: '',
+  updateStatus: '',
 };
 
 export const userSlice = createSlice({
@@ -33,7 +35,7 @@ export const userSlice = createSlice({
       firstName: string,
       lastName: string,
       email: string,
-      password: string
+      password: string,
     }>) => {
       state.registerStatus = 'loading';
     },
@@ -54,6 +56,24 @@ export const userSlice = createSlice({
       state.user = action.payload;
       state.loginStatus = 'ok';
     },
+    updateStart: (state, _action: PayloadAction<{
+      userId: number,
+      firstName: string,
+      lastName: string,
+      gender: string,
+      dob: string,
+      weight: number,
+      height: number,
+    }>) => {
+      state.updateStatus = 'loading';
+    },
+    updateFailed: (state) => {
+      state.updateStatus = 'error';
+    },
+    updateSuccess: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+      state.updateStatus = 'ok';
+    },
     logout: (state) => {
       state.user = null;
       state.loginStatus = '';
@@ -69,6 +89,9 @@ export const {
   loginStart,
   loginFailed,
   loginSuccess,
-  logout ,
+  updateStart,
+  updateFailed,
+  updateSuccess,
+  logout,
 } = userSlice.actions;
 export default userSlice.reducer;
