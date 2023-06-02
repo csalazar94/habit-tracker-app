@@ -114,14 +114,14 @@ export default function ProfileScreen() {
         label={'Peso (kg)'}
         keyboardType="numeric"
         mode='outlined'
-        value={weight.toString()}
+        value={weight === 0 ? '' : weight.toString()}
         onChangeText={(text) => setWeight(Number(text.replace(/[^0-9]/g, '')))}
       />
       <TextInput
         label={'Altura (cms)'}
         keyboardType="numeric"
         mode='outlined'
-        value={height.toString()}
+        value={height === 0 ? '' : height.toString()}
         onChangeText={(text) => setHeight(Number(text.replace(/[^0-9]/g, '')))}
       />
       {updateStatus === 'error' && (
