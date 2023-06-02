@@ -1,8 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Button, TextInput, Text, useTheme } from 'react-native-paper';
+import { Button, TextInput, Text, useTheme, HelperText } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../storage/store';
+import { registerStart } from '../storage/user/reducer';
 import { RegisterProps } from '../types/screens';
 
 
@@ -15,7 +17,10 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
 
   const theme = useTheme();
 
-  const handleLogin = () => {
+  const dispatch = useDispatch();
+  const { registerStatus } = useSelector((state: RootState) => state.user);
+  const handleRegister = () => {
+    dispatch(registerStart({ firstName, lastName, email, password }));
   };
 
   const styles = StyleSheet.create({
@@ -27,12 +32,6 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
       padding: 20,
       justifyContent: 'center',
     },
-    appBar: {
-      justifyContent: 'flex-start',
-    },
-    backButton: {
-      width: 80,
-    },
     title: {
       color: theme.colors.primary,
       textAlign: 'center',
@@ -40,15 +39,15 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
     },
     subtitle: {
       color: theme.colors.secondary,
-      marginBottom: 20,
     },
     input: {
-      marginBottom: 20,
+      marginTop: 15,
     },
     registerButton: {
-      marginBottom: 20,
+      marginTop: 15,
     },
     link: {
+      marginTop: 15,
       color: theme.colors.primary,
     },
   });
@@ -57,16 +56,6 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
     <View style={styles.background}>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={{ flex: 2 }}></View>
-        <View style={styles.appBar}>
-          <Button
-            icon="menu-left"
-            onPress={() => { navigation.goBack() }}
-            compact={true}
-            style={styles.backButton}
-          >
-            Atrás
-          </Button>
-        </View>
         <Text style={styles.title} variant='displayMedium'>Daily Goals</Text>
         <View style={{ flex: 1 }}></View>
         <Text style={styles.subtitle} variant='headlineMedium'>Crear cuenta</Text>
@@ -76,6 +65,7 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
           onChangeText={(text) => setFirstName(text)}
           mode="outlined"
           style={styles.input}
+          error={registerStatus === 'error'}
         />
         <TextInput
           label="Primer apellido"
@@ -83,6 +73,7 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
           onChangeText={(text) => setLastName(text)}
           mode="outlined"
           style={styles.input}
+          error={registerStatus === 'error'}
         />
         <TextInput
           label="Correo electrónico"
@@ -90,6 +81,7 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
           onChangeText={(text) => setEmail(text)}
           mode="outlined"
           style={styles.input}
+          error={registerStatus === 'error'}
         />
         <TextInput
           label="Contraseña"
@@ -98,6 +90,7 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
           secureTextEntry
           mode="outlined"
           style={styles.input}
+          error={registerStatus === 'error'}
         />
         <TextInput
           label="Confirmar contraseña"
@@ -106,11 +99,27 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
           secureTextEntry
           mode="outlined"
           style={styles.input}
+          error={
+            registerStatus === 'error'
+            || (passwordConfirmation !== '' && passwordConfirmation !== password)
+          }
         />
+        {passwordConfirmation !== '' && passwordConfirmation !== password && (
+          <HelperText type="error" visible={passwordConfirmation !== '' && passwordConfirmation !== password}>
+            Las contraseñas no coinciden
+          </HelperText>
+        )}
+        {registerStatus === 'error' && (
+          <HelperText type="error" visible={registerStatus === 'error'}>
+            Ha ocurrido un error
+          </HelperText>
+        )}
         <Button
           mode="contained"
-          onPress={handleLogin}
+          onPress={handleRegister}
           style={styles.registerButton}
+          loading={registerStatus === 'loading'}
+          disabled={registerStatus === 'loading'}
         >
           Crear cuenta
         </Button>

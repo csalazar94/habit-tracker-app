@@ -92,8 +92,8 @@ const AppDrawer = () => {
 };
 
 const App = () => {
-  const userStatus = useSelector((state: RootState) => state.user.status);
-  const isAuthenticated = userStatus === 'ok';
+  const { loginStatus, registerStatus } = useSelector((state: RootState) => state.user);
+  const isAuthenticated = loginStatus === 'ok' || registerStatus === 'ok';
 
   return (
     <Provider theme={CombinedDefaultTheme}>

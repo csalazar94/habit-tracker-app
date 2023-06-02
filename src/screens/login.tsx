@@ -14,7 +14,7 @@ export default function LoginScreen({ navigation }: LoginProps) {
   const theme = useTheme();
 
   const dispatch = useDispatch();
-  const { status } = useSelector((state: RootState) => state.user);
+  const { loginStatus } = useSelector((state: RootState) => state.user);
 
   const handleLogin = () => {
     dispatch(loginStart({ email, password }));
@@ -63,7 +63,7 @@ export default function LoginScreen({ navigation }: LoginProps) {
           mode="outlined"
           style={styles.input}
           autoCapitalize="none"
-          error={status === 'error'}
+          error={loginStatus === 'error'}
         />
         <TextInput
           label="Contraseña"
@@ -72,10 +72,10 @@ export default function LoginScreen({ navigation }: LoginProps) {
           secureTextEntry
           mode="outlined"
           style={styles.input}
-          error={status === 'error'}
+          error={loginStatus === 'error'}
         />
-        {status === 'error' && (
-          <HelperText type="error" visible={status === 'error'}>
+        {loginStatus === 'error' && (
+          <HelperText type="error" visible={loginStatus === 'error'}>
             Ha ocurrido un error
           </HelperText>
         )}
@@ -83,8 +83,8 @@ export default function LoginScreen({ navigation }: LoginProps) {
           mode="contained"
           onPress={handleLogin}
           style={styles.button}
-          loading={status === 'loading'}
-          disabled={status === 'loading'}
+          loading={loginStatus === 'loading'}
+          disabled={loginStatus === 'loading'}
         >
           Iniciar sesión
         </Button>

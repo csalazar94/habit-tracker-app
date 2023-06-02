@@ -15,31 +15,60 @@ export interface User {
   updatedAt: Date;
 };
 
-const initialState: { user: User | null, status: string } = {
+const initialState: {
+  user: User | null,
+  loginStatus: string,
+  registerStatus: string,
+} = {
   user: null,
-  status: '',
+  loginStatus: '',
+  registerStatus: '',
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    loginStart: (state, action: PayloadAction<{ email: string, password: string }>) => {
-      state.status = 'loading';
+    registerStart: (state, _action: PayloadAction<{
+      firstName: string,
+      lastName: string,
+      email: string,
+      password: string
+    }>) => {
+      state.registerStatus = 'loading';
+    },
+    registerFailed: (state) => {
+      state.registerStatus = 'error';
+    },
+    registerSuccess: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+      state.registerStatus = 'ok';
+    },
+    loginStart: (state, _action: PayloadAction<{ email: string, password: string }>) => {
+      state.loginStatus = 'loading';
     },
     loginFailed: (state) => {
-      state.status = 'error';
+      state.loginStatus = 'error';
     },
     loginSuccess: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
-      state.status = 'ok';
+      state.loginStatus = 'ok';
     },
     logout: (state) => {
       state.user = null;
-      state.status = '';
-    }
+      state.loginStatus = '';
+      state.registerStatus = '';
+    },
   },
 })
 
-export const { loginStart, loginFailed, loginSuccess, logout } = userSlice.actions;
+export const {
+  registerStart,
+  registerFailed,
+  registerSuccess,
+  loginStart,
+  loginFailed,
+  loginSuccess,
+  logout ,
+} = userSlice.actions;
 export default userSlice.reducer;
