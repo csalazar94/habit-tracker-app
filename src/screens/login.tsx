@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Button, TextInput, Text, useTheme } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import { Button, TextInput, Text, useTheme, HelperText } from 'react-native-paper';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../storage/store';
 import { loginStart } from '../storage/user/reducer';
 import { LoginProps } from '../types/screens';
 
@@ -13,6 +14,7 @@ export default function LoginScreen({ navigation }: LoginProps) {
   const theme = useTheme();
 
   const dispatch = useDispatch();
+  const { status } = useSelector((state: RootState) => state.user);
 
   const handleLogin = () => {
     dispatch(loginStart({ email, password }));
@@ -34,16 +36,16 @@ export default function LoginScreen({ navigation }: LoginProps) {
     },
     subtitle: {
       color: theme.colors.secondary,
-      marginBottom: 20,
     },
     input: {
-      marginBottom: 20,
+      marginTop: 15,
     },
     button: {
-      marginBottom: 20,
+      marginTop: 20,
     },
     link: {
       color: theme.colors.primary,
+      marginTop: 15,
     },
   });
 
@@ -60,6 +62,8 @@ export default function LoginScreen({ navigation }: LoginProps) {
           onChangeText={(text) => setEmail(text)}
           mode="outlined"
           style={styles.input}
+          autoCapitalize="none"
+          error={status === 'error'}
         />
         <TextInput
           label="Contraseña"
@@ -68,8 +72,20 @@ export default function LoginScreen({ navigation }: LoginProps) {
           secureTextEntry
           mode="outlined"
           style={styles.input}
+          error={status === 'error'}
         />
-        <Button mode="contained" onPress={handleLogin} style={styles.button}>
+        {status === 'error' && (
+          <HelperText type="error" visible={status === 'error'}>
+            Ha ocurrido un error
+          </HelperText>
+        )}
+        <Button
+          mode="contained"
+          onPress={handleLogin}
+          style={styles.button}
+          loading={status === 'loading'}
+          disabled={status === 'loading'}
+        >
           Iniciar sesión
         </Button>
         <TouchableOpacity
@@ -77,7 +93,6 @@ export default function LoginScreen({ navigation }: LoginProps) {
         >
           <Text variant='labelLarge' style={styles.link}>Crea tu cuenta</Text>
         </TouchableOpacity>
-        <View style={{ height: 10 }}></View>
         <TouchableOpacity
           onPress={() => { }}
         >

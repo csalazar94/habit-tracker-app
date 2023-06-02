@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
-import { adaptNavigationTheme, Provider, Text, useTheme } from 'react-native-paper';
+import { adaptNavigationTheme, Provider, useTheme } from 'react-native-paper';
 import { DefaultTheme as NavigationDefaultTheme } from '@react-navigation/native';
 import { MD3LightTheme } from 'react-native-paper';
 import merge from 'deepmerge';
@@ -14,7 +14,6 @@ import LoginScreen from './src/screens/login';
 import RegisterScreen from './src/screens/register';
 import HabitScreen from './src/screens/habit';
 import { AppDrawerParamList, AuthStackParamList, HabitsStackParamList } from './src/types/screens';
-import LogoutScreen from './src/screens/logout';
 import { logout } from './src/storage/user/reducer';
 
 const {
@@ -44,7 +43,7 @@ const AuthStack = () => {
     <AuthStackNavigator.Navigator screenOptions={{ headerShown: false }}>
       <AuthStackNavigator.Screen name="Login" component={LoginScreen} />
       <AuthStackNavigator.Screen name="Register" component={RegisterScreen} />
-      </AuthStackNavigator.Navigator>
+    </AuthStackNavigator.Navigator>
   );
 };
 
@@ -54,8 +53,8 @@ const CustomDrawerContent = (props: any) => {
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      <DrawerItem 
-        label="Logout"
+      <DrawerItem
+        label="Cerrar sesión"
         onPress={() => dispatch(logout())}
       />
     </DrawerContentScrollView>
@@ -70,8 +69,24 @@ const AppDrawer = () => {
 
   return (
     <AppDrawerNavigator.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />}>
-      <AppDrawerNavigator.Screen options={screenOptions} name="HabitsDrawer" component={HabitsStack} />
-      <AppDrawerNavigator.Screen options={screenOptions} name="Profile" component={ProfileScreen} />
+      <AppDrawerNavigator.Screen
+        options={{
+          ...screenOptions,
+          drawerLabel: 'Hábitos',
+          title: 'Hábitos'
+        }}
+        name="HabitsDrawer"
+        component={HabitsStack}
+      />
+      <AppDrawerNavigator.Screen
+        options={{
+          ...screenOptions,
+          drawerLabel: 'Perfil',
+          title: 'Perfil',
+        }}
+        name="Profile"
+        component={ProfileScreen}
+      />
     </AppDrawerNavigator.Navigator>
   );
 };
