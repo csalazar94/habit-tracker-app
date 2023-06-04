@@ -2,6 +2,7 @@ import { Button, Text, useTheme } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { HabitProps } from "../types/screens";
+import dayjs from "dayjs";
 
 LocaleConfig.locales['es'] = {
   monthNames: [
@@ -82,11 +83,9 @@ export default function HabitScreen({ route, navigation }: HabitProps) {
         enableSwipeMonths={true}
         theme={calendarTheme}
         markingType='custom'
-        markedDates={{
-          '2023-05-03': customMarkingStyle,
-          '2023-05-05': customMarkingStyle,
-          '2023-05-06': customMarkingStyle,
-        }}
+        markedDates={
+          Object.fromEntries(habit.dailyRecords.map((record) => [dayjs(record.date).format("YYYY-MM-DD"), customMarkingStyle]))
+        }
       />
       <Button onPress={() => navigation.goBack()} mode="contained">Volver</Button>
     </View>

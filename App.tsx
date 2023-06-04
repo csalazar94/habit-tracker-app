@@ -14,7 +14,7 @@ import LoginScreen from './src/screens/login';
 import RegisterScreen from './src/screens/register';
 import HabitScreen from './src/screens/habit';
 import { AppDrawerParamList, AuthStackParamList, HabitsStackParamList } from './src/types/screens';
-import { logout } from './src/storage/user/reducer';
+import { logout } from './src/storage/users/reducer';
 
 const {
   LightTheme,
@@ -92,7 +92,7 @@ const AppDrawer = () => {
 };
 
 const App = () => {
-  const { loginStatus, registerStatus } = useSelector((state: RootState) => state.user);
+  const { loginStatus, registerStatus } = useSelector((state: RootState) => state.users);
   const isAuthenticated = loginStatus === 'ok' || registerStatus === 'ok';
 
   return (

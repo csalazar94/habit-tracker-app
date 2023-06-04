@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Button, TextInput, Text, useTheme, HelperText } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../storage/store';
-import { registerStart } from '../storage/user/reducer';
+import { registerStart } from '../storage/users/reducer';
 import { RegisterProps } from '../types/screens';
 
 
@@ -18,7 +18,7 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
   const theme = useTheme();
 
   const dispatch = useDispatch();
-  const { registerStatus } = useSelector((state: RootState) => state.user);
+  const { registerStatus } = useSelector((state: RootState) => state.users);
   const handleRegister = () => {
     dispatch(registerStart({ firstName, lastName, email, password }));
   };
@@ -82,6 +82,7 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
           mode="outlined"
           style={styles.input}
           error={registerStatus === 'error'}
+          autoCapitalize="none"
         />
         <TextInput
           label="Contraseña"

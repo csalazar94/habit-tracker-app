@@ -1,5 +1,9 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
+type DailyRecord = {
+  date: Date;
+};
+
 type Habit = {
   id?: number;
   name: string;
@@ -8,7 +12,7 @@ type Habit = {
   target: number;
   current: number;
   progress: number;
-  done: boolean;
+  dailyRecords: DailyRecord[];
 };
 
 type HabitsStackParamList = {
@@ -35,6 +39,7 @@ type AppDrawerHabitsProps = NativeStackScreenProps<AppDrawerParamList, 'HabitsDr
 type AppDrawerProfileProps = NativeStackScreenProps<AppDrawerParamList, 'Profile'>;
 
 export type {
+  DailyRecord,
   Habit,
   HabitsStackParamList,
   HabitsProps,

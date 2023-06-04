@@ -95,7 +95,7 @@ export default function HabitCard({ habit }: { habit: Habit }) {
             <Text style={styles.targetText}>{getTargetText()}</Text>
             <ProgressBar style={styles.progress} progress={habit.progress} />
             <View style={styles.actionsContainer}>
-              <LastNDays />
+              <LastNDays records={habit.dailyRecords}/>
             </View>
           </View>
         </View>

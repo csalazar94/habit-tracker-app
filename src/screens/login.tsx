@@ -4,17 +4,17 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Button, TextInput, Text, useTheme, HelperText } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../storage/store';
-import { loginStart } from '../storage/user/reducer';
+import { loginStart } from '../storage/users/reducer';
 import { LoginProps } from '../types/screens';
 
 export default function LoginScreen({ navigation }: LoginProps) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('camilosalazar94@gmail.com');
+  const [password, setPassword] = useState('123456');
 
   const theme = useTheme();
 
   const dispatch = useDispatch();
-  const { loginStatus } = useSelector((state: RootState) => state.user);
+  const { loginStatus } = useSelector((state: RootState) => state.users);
 
   const handleLogin = () => {
     dispatch(loginStart({ email, password }));

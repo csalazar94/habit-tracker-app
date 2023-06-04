@@ -2,8 +2,9 @@ import { Text, useTheme } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import dayjs from "dayjs";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { DailyRecord } from "../types/screens";
 
-export default function LastNDays() {
+export default function LastNDays({ records }: { records: DailyRecord[] }) {
   const theme = useTheme();
   const styles = StyleSheet.create({
     container: {
@@ -29,10 +30,22 @@ export default function LastNDays() {
     },
   });
   const data = [
-    { date: "2023-04-01", done: false },
-    { date: "2023-04-02", done: false },
-    { date: "2023-04-03", done: true },
-    { date: "2023-04-04", done: true },
+    {
+      date: dayjs().subtract(3, 'day').format('YYYY-MM-DD'),
+      done: records.find((record) => dayjs().subtract(3, 'day').isSame(record.date, 'day'))
+    },
+    {
+      date: dayjs().subtract(2, 'day').format('YYYY-MM-DD'),
+      done: records.find((record) => dayjs().subtract(2, 'day').isSame(record.date, 'day'))
+    },
+    {
+      date: dayjs().subtract(1, 'day').format('YYYY-MM-DD'),
+      done: records.find((record) => dayjs().subtract(1, 'day').isSame(record.date, 'day'))
+    },
+    {
+      date: dayjs().format('YYYY-MM-DD'),
+      done: records.find((record) => dayjs().isSame(record.date, 'day'))
+    },
   ];
   const dayNamesShort = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   return (
@@ -40,7 +53,7 @@ export default function LastNDays() {
       {data.map((day, index) => {
         const date = dayjs(day.date);
         return (
-          <TouchableOpacity key={index} onPress={() => {}}>
+          <TouchableOpacity key={index} onPress={() => { }}>
             <View style={[styles.daysContainer, day.done ? styles.daysContainerSelected : null]}>
               <Text style={day.done ? styles.dayTextSelected : styles.dayText}>{dayNamesShort[date.day()]}</Text>
               <Text style={day.done ? styles.dayTextSelected : styles.dayText}>{date.date()}</Text>

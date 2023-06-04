@@ -3,122 +3,25 @@ import { StyleSheet, View, VirtualizedList } from "react-native";
 import HabitCard from "../components/habit-card";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Habit, HabitsProps } from "../types/screens";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../storage/store";
+import { useEffect } from "react";
+import { findAllStart } from "../storage/habits/reducer";
+import { logout } from "../storage/users/reducer";
 
 export default function HabitsScreen({ navigation }: HabitsProps) {
-  const habits = [
-    {
-      id: 1,
-      name: 'Habit 1',
-      frequency: 'weekly',
-      unit: 'times',
-      target: 3,
-      current: 2,
-      progress: 2 / 3,
-      done: true,
-    },
-    {
-      id: 2,
-      name: 'Habit 2',
-      frequency: 'weekly',
-      unit: 'times',
-      target: 5,
-      current: 3,
-      progress: 3 / 5,
-      done: true,
-    },
-    {
-      id: 3,
-      name: 'Habit 3',
-      frequency: 'daily',
-      unit: 'times',
-      target: 2,
-      current: 1,
-      progress: 1 / 2,
-      done: false,
-    },
-    {
-      id: 4,
-      name: 'Habit 4',
-      frequency: 'daily',
-      unit: 'pages',
-      target: 100,
-      current: 30,
-      progress: 30 / 100,
-      done: false,
-    },
-    {
-      id: 5,
-      name: 'Habit 5',
-      frequency: 'weekly',
-      unit: 'times',
-      target: 3,
-      current: 2,
-      progress: 2 / 3,
-      done: true,
-    },
-    {
-      id: 6,
-      name: 'Habit 6',
-      frequency: 'weekly',
-      unit: 'times',
-      target: 5,
-      current: 3,
-      progress: 3 / 5,
-      done: true,
-    },
-    {
-      id: 7,
-      name: 'Habit 7',
-      frequency: 'daily',
-      unit: 'times',
-      target: 2,
-      current: 1,
-      progress: 1 / 2,
-      done: true,
-    },
-    {
-      id: 8,
-      name: 'Habit 8',
-      frequency: 'daily',
-      unit: 'pages',
-      target: 1000,
-      current: 30,
-      progress: 30 / 100,
-      done: false,
-    },
-    {
-      id: 9,
-      name: 'Habit 9',
-      frequency: 'weekly',
-      unit: 'times',
-      target: 5,
-      current: 3,
-      progress: 3 / 5,
-      done: true,
-    },
-    {
-      id: 10,
-      name: 'Habit 10',
-      frequency: 'daily',
-      unit: 'times',
-      target: 2,
-      current: 1,
-      progress: 1 / 2,
-      done: false,
-    },
-    {
-      id: 11,
-      name: 'Habit 11',
-      frequency: 'daily',
-      unit: 'pages',
-      target: 100,
-      current: 30,
-      progress: 30 / 100,
-      done: true,
-    }
-  ];
-
+  const dispatch = useDispatch();
+  const { habits, findAllStatus } = useSelector((state: RootState) => state.habits);
+  const { user } = useSelector((state: RootState) => state.users);
   const theme = useTheme();
+
+  useEffect(() => {
+    if (!user) {
+      dispatch(logout());
+    } else {
+      dispatch(findAllStart({ userId: user.id }));
+    }
+  }, []);
 
   const styles = StyleSheet.create({
     container: {
@@ -139,6 +42,14 @@ export default function HabitsScreen({ navigation }: HabitsProps) {
   return (
     <View style={styles.container}>
       <VirtualizedList
+        onRefresh={() => {
+          if (!user) {
+            dispatch(logout());
+          } else {
+            dispatch(findAllStart({ userId: user.id }));
+          }
+        }}
+        refreshing={findAllStatus === 'loading'}
         renderItem={({ item }: { item: Habit }) => {
           return (
             <TouchableOpacity

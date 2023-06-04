@@ -27,8 +27,8 @@ const initialState: {
   updateStatus: '',
 };
 
-export const userSlice = createSlice({
-  name: 'user',
+export const usersSlice = createSlice({
+  name: 'users',
   initialState,
   reducers: {
     registerStart: (state, _action: PayloadAction<{
@@ -93,5 +93,5 @@ export const {
   updateFailed,
   updateSuccess,
   logout,
-} = userSlice.actions;
-export default userSlice.reducer;
+} = usersSlice.actions;
+export default usersSlice.reducer;

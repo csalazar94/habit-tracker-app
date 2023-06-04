@@ -6,7 +6,7 @@ import DropDown from "react-native-paper-dropdown";
 import { RootState } from "../storage/store";
 import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
-import { logout, updateStart } from "../storage/user/reducer";
+import { logout, updateStart } from "../storage/users/reducer";
 
 const styles = StyleSheet.create({
   formContainer: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 });
 
 export default function ProfileScreen() {
-  const { user, updateStatus } = useSelector((state: RootState) => state.user);
+  const { user, updateStatus } = useSelector((state: RootState) => state.users);
   const [firstName, setFirstName] = useState(user?.firstName || '');
   const [lastName, setLastName] = useState(user?.lastName || '');
   const [email, setEmail] = useState(user?.email || '');

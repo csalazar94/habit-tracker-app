@@ -1,7 +1,7 @@
-import { User } from "../storage/user/reducer";
+import { User } from "../storage/users/reducer";
 
 async function login(email: string, password: string): Promise<User> {
-  const response = await fetch('http://192.168.100.45:5500/auth/login', {
+  const response = await fetch('http://localhost:5500/auth/login', {
     method: 'POST',
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -11,7 +11,7 @@ async function login(email: string, password: string): Promise<User> {
 }
 
 async function register(firstName: string, lastName: string, email: string, password: string): Promise<User> {
-  const response = await fetch('http://192.168.100.45:5500/users', {
+  const response = await fetch('http://localhost:5500/users', {
     method: 'POST',
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -26,7 +26,7 @@ async function register(firstName: string, lastName: string, email: string, pass
 }
 
 async function update(userId: number, firstName: string, lastName: string, gender: string, dob: string, weight: number, height: number): Promise<User> {
-  const response = await fetch(`http://192.168.100.45:5500/users/${userId}`, {
+  const response = await fetch(`http://localhost:5500/users/${userId}`, {
     method: 'PATCH',
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

@@ -7,14 +7,14 @@ import HabitCard from '../components/habit-card';
 import { AddHabitProps } from '../types/screens';
 
 export default function AddHabitScreen({ navigation }: AddHabitProps) {
-  const [habitName, setHabitName] = useState('Hábito');
+  const [habitName, setHabitName] = useState('');
   const [showDropDownFrequency, setShowDropDownFrequency] = useState(false);
   const [frequency, setFrequency] = useState('daily');
   const [showDropDownUnits, setShowDropDownUnits] = useState(false);
   const [unit, setUnit] = useState('times');
   const [showDropDownCategory, setShowDropDownCategory] = useState(false);
-  const [category, setCategory] = useState('Salud');
-  const [target, setTarget] = useState('10');
+  const [category, setCategory] = useState('health');
+  const [target, setTarget] = useState(0);
 
   const frequencies = [
     {
@@ -28,7 +28,11 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
     {
       label: 'Mensual',
       value: 'monthly',
-    }
+    },
+    {
+      label: 'Anual',
+      value: 'yearly',
+    },
   ];
   const units = [
     {
@@ -77,7 +81,7 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
             target: Number(target),
             progress: Math.random(),
             current: Math.random(),
-            done: true,
+            dailyRecords: [],
           }}
         />
         <Text variant='titleLarge'>Crear hábito</Text>
@@ -99,10 +103,10 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
         />
         <TextInput
           mode="outlined"
-          value={target}
-          onChangeText={setTarget}
-          keyboardType="numeric"
           label="Objetivo"
+          keyboardType="numeric"
+          value={target === 0 ? '' : target.toString()}
+          onChangeText={(text) => setTarget(Number(text.replace(/[^0-9]/g, '')))}
         />
         <DropDown
           label='Unidad'
