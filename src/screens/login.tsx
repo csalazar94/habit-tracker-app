@@ -73,6 +73,7 @@ export default function LoginScreen({ navigation }: LoginProps) {
           mode="outlined"
           style={styles.input}
           error={loginStatus === 'error'}
+          blurOnSubmit={false}
         />
         {loginStatus === 'error' && (
           <HelperText type="error" visible={loginStatus === 'error'}>

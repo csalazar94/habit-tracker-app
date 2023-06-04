@@ -92,6 +92,7 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
           mode="outlined"
           style={styles.input}
           error={registerStatus === 'error'}
+          blurOnSubmit={false}
         />
         <TextInput
           label="Confirmar contraseña"
@@ -104,6 +105,7 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
             registerStatus === 'error'
             || (passwordConfirmation !== '' && passwordConfirmation !== password)
           }
+          blurOnSubmit={false}
         />
         {passwordConfirmation !== '' && passwordConfirmation !== password && (
           <HelperText type="error" visible={passwordConfirmation !== '' && passwordConfirmation !== password}>

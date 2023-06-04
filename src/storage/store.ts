@@ -5,7 +5,7 @@ import usersReducer from './users/reducer';
 import habitsReducer from './habits/reducer';
 import habitCategoriesReducer from './habit-categories/reducer';
 import { loginSaga, registerSaga, updateSaga } from './users/sagas';
-import { getHabitsSaga } from './habits/sagas';
+import { createHabitSaga, getHabitsSaga } from './habits/sagas';
 import { getHabitCategoriesSaga } from './habit-categories/sagas';
 
 function* rootSaga() {
@@ -15,6 +15,7 @@ function* rootSaga() {
     updateSaga(),
     getHabitsSaga(),
     getHabitCategoriesSaga(),
+    createHabitSaga(),
   ]);
 }
 

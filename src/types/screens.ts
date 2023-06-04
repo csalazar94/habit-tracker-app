@@ -9,7 +9,6 @@ type Habit = {
   id?: number;
   name: string;
   frequency: string;
-  unit: string;
   target: number;
   current: number;
   progress: number;

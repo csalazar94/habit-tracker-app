@@ -50,32 +50,21 @@ export default function HabitCard({ habit }: { habit: Habit }) {
   const getTargetText = () => {
     let suffix;
     switch (habit.frequency) {
-      case 'daily':
-        suffix = 'al día';
-        break;
       case 'weekly':
         suffix = 'a la semana';
         break;
       case 'monthly':
         suffix = 'al mes';
         break;
+      case 'yearly':
+        suffix = 'al año';
+        break;
     }
     let unit;
-    switch (habit.unit) {
-      case 'times':
-        if (habit.target === 1) {
-          unit = 'vez';
-        } else {
-          unit = 'veces';
-        }
-        break;
-      case 'pages':
-        if (habit.target === 1) {
-          unit = 'página';
-        } else {
-          unit = 'páginas';
-        }
-        break;
+    if (habit.target === 1) {
+      unit = 'vez';
+    } else {
+      unit = 'veces';
     }
     return `${habit.target} ${unit} ${suffix}`;
   };
@@ -95,7 +84,7 @@ export default function HabitCard({ habit }: { habit: Habit }) {
             <Text style={styles.targetText}>{getTargetText()}</Text>
             <ProgressBar style={styles.progress} progress={habit.progress} />
             <View style={styles.actionsContainer}>
-              <LastNDays records={habit.dailyRecords}/>
+              <LastNDays records={habit.dailyRecords} />
             </View>
           </View>
         </View>

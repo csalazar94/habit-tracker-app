@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { TextInput, Text, Button } from 'react-native-paper';
+import { TextInput, Text, Button, HelperText } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
 import { ScrollView } from 'react-native-gesture-handler';
 import HabitCard from '../components/habit-card';
@@ -8,15 +8,14 @@ import { AddHabitProps } from '../types/screens';
 import { useDispatch, useSelector } from 'react-redux';
 import { findAllStart } from '../storage/habit-categories/reducer';
 import { RootState } from '../storage/store';
+import { createReset, createStart } from '../storage/habits/reducer';
 
 export default function AddHabitScreen({ navigation }: AddHabitProps) {
   const [habitName, setHabitName] = useState('');
   const [showDropDownFrequency, setShowDropDownFrequency] = useState(false);
-  const [frequency, setFrequency] = useState('daily');
-  const [showDropDownUnits, setShowDropDownUnits] = useState(false);
-  const [unit, setUnit] = useState('times');
+  const [frequency, setFrequency] = useState('weekly');
   const [showDropDownCategory, setShowDropDownCategory] = useState(false);
-  const [category, setCategory] = useState('health');
+  const [category, setCategory] = useState(1);
   const [target, setTarget] = useState(0);
 
   const dispatch = useDispatch();
@@ -24,11 +23,17 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
     dispatch(findAllStart());
   }, []);
 
+  const { createStatus } = useSelector((state: RootState) => state.habits);
+  useEffect(() => {
+    if (createStatus === 'ok') {
+      navigation.goBack();
+      dispatch(createReset());
+    }
+  }, [createStatus]);
+
+  const { user } = useSelector((state: RootState) => state.users);
+
   const frequencies = [
-    {
-      label: 'Diario',
-      value: 'daily',
-    },
     {
       label: 'Semanal',
       value: 'weekly',
@@ -42,96 +47,13 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
       value: 'yearly',
     },
   ];
-  const units = [
-    {
-      label: 'Veces',
-      value: 'times',
-    },
-    {
-      label: 'Páginas',
-      value: 'pages',
-    },
-  ];
   const { habitCategories } = useSelector((state: RootState) => state.habitCategories);
   const categories = habitCategories.map((hc) => {
-    switch (hc.name) {
-      case 'mental-health': {
-        return {
-          label: 'Salud mental',
-          value: hc.name,
-        };
-      }
-      case 'physical-health': {
-        return {
-          label: 'Salud física',
-          value: hc.name,
-        };
-      }
-      case 'education': {
-        return {
-          label: 'Educación',
-          value: hc.name,
-        };
-      }
-      case 'finance': {
-        return {
-          label: 'Finanzas',
-          value: hc.name,
-        };
-      }
-      case 'productivity': {
-        return {
-          label: 'Productividad',
-          value: hc.name,
-        };
-      }
-      case 'social': {
-        return {
-          label: 'Social',
-          value: hc.name,
-        };
-      }
-      case 'art': {
-        return {
-          label: 'Arte',
-          value: hc.name,
-        };
-      }
-      case 'environment': {
-        return {
-          label: 'Medio ambiente',
-          value: hc.name,
-        };
-      }
-      case 'tecnology': {
-        return {
-          label: 'Tecnología',
-          value: hc.name,
-        };
-      }
-      case 'spirituality': {
-        return {
-          label: 'Espiritualidad',
-          value: hc.name,
-        };
-      }
-      case 'other': {
-        return {
-          label: 'Otro',
-          value: hc.name,
-        };
-      }
-      default: {
-        return {
-          label: '?',
-          value: hc.name,
-        };
-      }
-    }
-  }).filter((hc) => hc.label !== '?');
+    return { label: hc.name, value: hc.id };
+  });
 
   const onSave = () => {
-    navigation.goBack();
+    dispatch(createStart({ userId: user.id, habitCategoryId: category, name: habitName, frequency, target }));
   };
 
   const styles = StyleSheet.create({
@@ -152,15 +74,14 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
           habit={{
             name: habitName,
             frequency,
-            unit,
             target: Number(target),
             progress: Math.random(),
             current: Math.random(),
             dailyRecords: [],
             habitCategory: {
-              id: 999,
-              name: category,
-              icon: habitCategories.find((hc) => hc.name === category)?.icon || 'help',
+              id: category,
+              name: habitCategories.find((hc) => hc.id === category)?.name || 'Otro',
+              icon: habitCategories.find((hc) => hc.id === category)?.icon || 'help',
               createdAt: new Date(),
               updatedAt: new Date(),
             },
@@ -191,16 +112,6 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
           onChangeText={(text) => setTarget(Number(text.replace(/[^0-9]/g, '')))}
         />
         <DropDown
-          label='Unidad'
-          mode='outlined'
-          visible={showDropDownUnits}
-          showDropDown={() => setShowDropDownUnits(true)}
-          onDismiss={() => setShowDropDownUnits(false)}
-          value={unit}
-          setValue={setUnit}
-          list={units}
-        />
-        <DropDown
           label='Frecuencia'
           mode='outlined'
           visible={showDropDownFrequency}
@@ -210,8 +121,25 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
           setValue={setFrequency}
           list={frequencies}
         />
-        <Button mode='contained' onPress={onSave}>Guardar</Button>
-        <Button mode='outlined' onPress={() => navigation.goBack()}>Volver</Button>
+        {createStatus === 'error' && (
+          <HelperText type="error" visible={createStatus === 'error'}>
+            Ha ocurrido un error
+          </HelperText>
+        )}
+        <Button
+          mode='contained'
+          onPress={onSave}
+          loading={createStatus === 'loading'}
+          disabled={createStatus === 'loading'}
+        >
+          Guardar
+        </Button>
+        <Button
+          mode='outlined'
+          onPress={() => navigation.goBack()}
+        >
+          Volver
+        </Button>
       </ScrollView>
     </View>
   );
