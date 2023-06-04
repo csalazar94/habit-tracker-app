@@ -84,7 +84,7 @@ export default function HabitCard({ habit }: { habit: Habit }) {
     <Card style={styles.container}>
       <Card.Content style={styles.contentContainer}>
         <View style={styles.headerContainer}>
-          <Avatar.Icon size={36} icon="heart" />
+          <Avatar.Icon size={36} icon={habit.habitCategory.icon} />
           <View style={styles.titleContainer}>
             <Text variant="titleMedium">{habit.name}</Text>
             <Text>{Math.round(habit.progress * 100)}%</Text>

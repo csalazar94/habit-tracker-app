@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TextInput, Text, Button } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
 import { ScrollView } from 'react-native-gesture-handler';
 import HabitCard from '../components/habit-card';
 import { AddHabitProps } from '../types/screens';
+import { useDispatch, useSelector } from 'react-redux';
+import { findAllStart } from '../storage/habit-categories/reducer';
+import { RootState } from '../storage/store';
 
 export default function AddHabitScreen({ navigation }: AddHabitProps) {
   const [habitName, setHabitName] = useState('');
@@ -15,6 +18,11 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
   const [showDropDownCategory, setShowDropDownCategory] = useState(false);
   const [category, setCategory] = useState('health');
   const [target, setTarget] = useState(0);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(findAllStart());
+  }, []);
 
   const frequencies = [
     {
@@ -44,16 +52,83 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
       value: 'pages',
     },
   ];
-  const categories = [
-    {
-      label: 'Productividad',
-      value: 'productivity',
-    },
-    {
-      label: 'Salud',
-      value: 'health',
+  const { habitCategories } = useSelector((state: RootState) => state.habitCategories);
+  const categories = habitCategories.map((hc) => {
+    switch (hc.name) {
+      case 'mental-health': {
+        return {
+          label: 'Salud mental',
+          value: hc.name,
+        };
+      }
+      case 'physical-health': {
+        return {
+          label: 'Salud física',
+          value: hc.name,
+        };
+      }
+      case 'education': {
+        return {
+          label: 'Educación',
+          value: hc.name,
+        };
+      }
+      case 'finance': {
+        return {
+          label: 'Finanzas',
+          value: hc.name,
+        };
+      }
+      case 'productivity': {
+        return {
+          label: 'Productividad',
+          value: hc.name,
+        };
+      }
+      case 'social': {
+        return {
+          label: 'Social',
+          value: hc.name,
+        };
+      }
+      case 'art': {
+        return {
+          label: 'Arte',
+          value: hc.name,
+        };
+      }
+      case 'environment': {
+        return {
+          label: 'Medio ambiente',
+          value: hc.name,
+        };
+      }
+      case 'tecnology': {
+        return {
+          label: 'Tecnología',
+          value: hc.name,
+        };
+      }
+      case 'spirituality': {
+        return {
+          label: 'Espiritualidad',
+          value: hc.name,
+        };
+      }
+      case 'other': {
+        return {
+          label: 'Otro',
+          value: hc.name,
+        };
+      }
+      default: {
+        return {
+          label: '?',
+          value: hc.name,
+        };
+      }
     }
-  ];
+  }).filter((hc) => hc.label !== '?');
 
   const onSave = () => {
     navigation.goBack();
@@ -82,6 +157,13 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
             progress: Math.random(),
             current: Math.random(),
             dailyRecords: [],
+            habitCategory: {
+              id: 999,
+              name: category,
+              icon: habitCategories.find((hc) => hc.name === category)?.icon || 'question',
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            },
           }}
         />
         <Text variant='titleLarge'>Crear hábito</Text>

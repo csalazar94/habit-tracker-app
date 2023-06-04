@@ -1,4 +1,5 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { HabitCategory } from '../storage/habit-categories/reducer';
 
 type DailyRecord = {
   date: Date;
@@ -13,6 +14,7 @@ type Habit = {
   current: number;
   progress: number;
   dailyRecords: DailyRecord[];
+  habitCategory: HabitCategory;
 };
 
 type HabitsStackParamList = {

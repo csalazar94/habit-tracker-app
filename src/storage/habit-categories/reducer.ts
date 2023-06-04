@@ -1,36 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { HabitCategory } from '../habit-categories/reducer';
 
-export interface Habit {
+export interface HabitCategory {
   id: number;
   name: string;
-  description: string;
+  icon: string;
   createdAt: Date;
   updatedAt: Date;
-  habitCategory: HabitCategory;
-};
+}
 
 const initialState: {
-  habits: Habit[],
+  habitCategories: HabitCategory[],
   findAllStatus: string,
 } = {
-  habits: [],
+  habitCategories: [],
   findAllStatus: '',
 };
 
-export const habitsSlice = createSlice({
-  name: 'habits',
+export const habitCategoriesSlice = createSlice({
+  name: 'habitCategories',
   initialState,
   reducers: {
-    findAllStart: (state, _action: PayloadAction<{ userId: number }>) => {
+    findAllStart: (state) => {
       state.findAllStatus = 'loading';
     },
     findAllFailed: (state) => {
       state.findAllStatus = 'error';
     },
-    findAllSuccess: (state, action: PayloadAction<Habit[]>) => {
-      state.habits = action.payload;
+    findAllSuccess: (state, action: PayloadAction<HabitCategory[]>) => {
+      state.habitCategories = action.payload;
       state.findAllStatus = 'ok';
     },
   },
@@ -40,5 +38,5 @@ export const {
   findAllStart,
   findAllFailed,
   findAllSuccess,
-} = habitsSlice.actions;
-export default habitsSlice.reducer;
+} = habitCategoriesSlice.actions;
+export default habitCategoriesSlice.reducer;
