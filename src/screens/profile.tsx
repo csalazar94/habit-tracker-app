@@ -132,6 +132,8 @@ export default function ProfileScreen() {
       <Button
         mode={'contained'}
         onPress={handleSave}
+        loading={updateStatus === 'loading'}
+        disabled={updateStatus === 'loading'}
       >
         Guardar
       </Button>
