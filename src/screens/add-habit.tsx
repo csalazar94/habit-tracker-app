@@ -160,7 +160,7 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
             habitCategory: {
               id: 999,
               name: category,
-              icon: habitCategories.find((hc) => hc.name === category)?.icon || 'question',
+              icon: habitCategories.find((hc) => hc.name === category)?.icon || 'help',
               createdAt: new Date(),
               updatedAt: new Date(),
             },
