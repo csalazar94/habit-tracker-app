@@ -11,7 +11,7 @@ import { logout } from "../storage/users/reducer";
 
 export default function HabitsScreen({ navigation }: HabitsProps) {
   const dispatch = useDispatch();
-  const { habits, findAllStatus } = useSelector((state: RootState) => state.habits);
+  const { habits, findAllStatus, findOneStatus } = useSelector((state: RootState) => state.habits);
   const { user } = useSelector((state: RootState) => state.users);
   const theme = useTheme();
 
@@ -51,12 +51,13 @@ export default function HabitsScreen({ navigation }: HabitsProps) {
         }}
         refreshing={findAllStatus === 'loading'}
         renderItem={({ item }: { item: Habit }) => {
+          const status = findOneStatus.find((s) => s.habitId === item.id)?.status || '';
           return (
             <TouchableOpacity
               style={styles.itemContainer}
               onPress={() => navigation.navigate('Habit', { habit: item })}
             >
-              <HabitCard habit={item} />
+              <HabitCard habit={item} status={status} />
             </TouchableOpacity>
           );
         }}

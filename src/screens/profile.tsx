@@ -53,7 +53,7 @@ export default function ProfileScreen() {
         firstName,
         lastName,
         gender,
-        dob: dayjs(dob).format('YYYY-MM-DDT00:00:00.000Z'),
+        dob: dayjs(dob).toISOString(),
         weight,
         height,
       };

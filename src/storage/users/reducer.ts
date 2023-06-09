@@ -19,11 +19,13 @@ const initialState: {
   user: User | null,
   loginStatus: string,
   registerStatus: string,
+  registerError: { property: string, messages: [] }[] | string,
   updateStatus: string,
 } = {
   user: null,
   loginStatus: '',
   registerStatus: '',
+  registerError: [],
   updateStatus: '',
 };
 
@@ -38,13 +40,16 @@ export const usersSlice = createSlice({
       password: string,
     }>) => {
       state.registerStatus = 'loading';
+      state.registerError = [];
     },
-    registerFailed: (state) => {
+    registerFailed: (state, action: PayloadAction<[] | string>) => {
       state.registerStatus = 'error';
+      state.registerError = action.payload;
     },
     registerSuccess: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
       state.registerStatus = 'ok';
+      state.registerError = [];
     },
     loginStart: (state, _action: PayloadAction<{ email: string, password: string }>) => {
       state.loginStatus = 'loading';

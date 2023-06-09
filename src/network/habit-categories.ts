@@ -1,7 +1,8 @@
-import { HabitCategory } from "../storage/habits/reducer";
+import { HabitCategory } from "../storage/habit-categories/reducer";
+import { url } from "./config";
 
 async function findAll(): Promise<HabitCategory[]> {
-  const response = await fetch('http://localhost:5500/habit-categories', {
+  const response = await fetch(`${url}/habit-categories`, {
     method: 'GET',
     headers: { "Content-Type": "application/json" },
   });

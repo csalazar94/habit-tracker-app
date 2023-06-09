@@ -7,6 +7,7 @@ function* findAll() {
     const habitCategories: HabitCategory[] = yield call(habitCategoriesService.findAll);
     yield put(findAllSuccess(habitCategories));
   } catch (e) {
+    console.error(e);
     yield put(findAllFailed());
   }
 }

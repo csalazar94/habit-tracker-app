@@ -18,7 +18,7 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
   const theme = useTheme();
 
   const dispatch = useDispatch();
-  const { registerStatus } = useSelector((state: RootState) => state.users);
+  const { registerStatus, registerError } = useSelector((state: RootState) => state.users);
   const handleRegister = () => {
     dispatch(registerStart({ firstName, lastName, email, password }));
   };
@@ -52,6 +52,19 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
     },
   });
 
+  const hasErrors = (property: string) => {
+    return registerStatus === 'error' && Array.isArray(registerError) && registerError.findIndex((e) => e.property === property) !== -1;
+  }
+
+  const getErrorsMessage = (property: string) => {
+    if (!hasErrors(property)) return;
+    return (
+      <HelperText type="error">
+        {(registerError as { property: string, messages: [] }[]).find((e) => e.property === property)?.messages.join('\n')}
+      </HelperText>
+    );
+  }
+
   return (
     <View style={styles.background}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -65,25 +78,28 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
           onChangeText={(text) => setFirstName(text)}
           mode="outlined"
           style={styles.input}
-          error={registerStatus === 'error'}
+          error={hasErrors('firstName')}
         />
+        {getErrorsMessage('firstName')}
         <TextInput
           label="Primer apellido"
           value={lastName}
           onChangeText={(text) => setLastName(text)}
           mode="outlined"
           style={styles.input}
-          error={registerStatus === 'error'}
+          error={hasErrors('lastName')}
         />
+        {getErrorsMessage('lastName')}
         <TextInput
           label="Correo electrónico"
           value={email}
           onChangeText={(text) => setEmail(text)}
           mode="outlined"
           style={styles.input}
-          error={registerStatus === 'error'}
+          error={hasErrors('email')}
           autoCapitalize="none"
         />
+        {getErrorsMessage('email')}
         <TextInput
           label="Contraseña"
           value={password}
@@ -91,9 +107,10 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
           secureTextEntry
           mode="outlined"
           style={styles.input}
-          error={registerStatus === 'error'}
+          error={hasErrors('password')}
           blurOnSubmit={false}
         />
+        {getErrorsMessage('password')}
         <TextInput
           label="Confirmar contraseña"
           value={passwordConfirmation}
@@ -101,10 +118,7 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
           secureTextEntry
           mode="outlined"
           style={styles.input}
-          error={
-            registerStatus === 'error'
-            || (passwordConfirmation !== '' && passwordConfirmation !== password)
-          }
+          error={passwordConfirmation !== '' && passwordConfirmation !== password}
           blurOnSubmit={false}
         />
         {passwordConfirmation !== '' && passwordConfirmation !== password && (
@@ -112,17 +126,19 @@ export default function RegisterScreen({ navigation }: RegisterProps) {
             Las contraseñas no coinciden
           </HelperText>
         )}
-        {registerStatus === 'error' && (
-          <HelperText type="error" visible={registerStatus === 'error'}>
-            Ha ocurrido un error
-          </HelperText>
-        )}
+        {
+          registerStatus === 'error' && (typeof registerError === 'string') && (
+            <HelperText type="error" visible={registerStatus === 'error' && (typeof registerError === 'string')}>
+              {String(registerError)}
+            </HelperText>
+          )
+        }
         <Button
           mode="contained"
           onPress={handleRegister}
           style={styles.registerButton}
           loading={registerStatus === 'loading'}
-          disabled={registerStatus === 'loading'}
+          disabled={registerStatus === 'loading' || !passwordConfirmation || (passwordConfirmation !== '' && passwordConfirmation !== password)}
         >
           Crear cuenta
         </Button>

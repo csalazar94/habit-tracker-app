@@ -2,7 +2,9 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { HabitCategory } from '../storage/habit-categories/reducer';
 
 type DailyRecord = {
-  date: Date;
+  id: number;
+  habitId: number;
+  date: string;
 };
 
 type Habit = {

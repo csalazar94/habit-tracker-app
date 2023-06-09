@@ -1,9 +1,9 @@
-import { Avatar, Card, ProgressBar, Text } from "react-native-paper";
+import { ActivityIndicator, Avatar, Card, ProgressBar, Text } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import LastNDays from "./last-n-days";
 import { Habit } from "../types/screens";
 
-export default function HabitCard({ habit }: { habit: Habit }) {
+export default function HabitCard({ habit, status }: { habit: Habit, status: string }) {
   const styles = StyleSheet.create({
     container: {
       margin: 3,
@@ -76,15 +76,22 @@ export default function HabitCard({ habit }: { habit: Habit }) {
           <Avatar.Icon size={36} icon={habit.habitCategory.icon} />
           <View style={styles.titleContainer}>
             <Text variant="titleMedium">{habit.name}</Text>
-            <Text>{Math.round(habit.progress * 100)}%</Text>
+            {
+              status === 'loading'
+                ? <ActivityIndicator />
+                : <Text>{Math.round(habit.progress * 100)}%</Text>
+            }
           </View>
         </View>
         <View style={styles.subContentContainer}>
           <View style={styles.descriptionContainer}>
             <Text style={styles.targetText}>{getTargetText()}</Text>
-            <ProgressBar style={styles.progress} progress={habit.progress} />
+            <ProgressBar style={styles.progress} progress={habit.progress} indeterminate={status === 'loading'} />
             <View style={styles.actionsContainer}>
-              <LastNDays records={habit.dailyRecords} />
+              <LastNDays
+                habitId={habit.id}
+                records={habit.dailyRecords}
+              />
             </View>
           </View>
         </View>
