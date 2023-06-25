@@ -33,22 +33,22 @@ export default function LastNDays({ habitId, records }: { habitId?: number, reco
     },
   });
   const getDateData = (n: number) => {
-    const currentDate = dayjs().utc().startOf('day');
+    const currentDate = dayjs().startOf('day');
     const currentRecord = records.find((record) => currentDate.subtract(n, 'day').isSame(record.date, 'day'));
     return {
       id: currentRecord?.id,
-      date: currentDate.subtract(n, 'day').toISOString(),
+      date: currentDate.subtract(n, 'day'),
+      dateString: currentDate.subtract(n, 'day').toISOString(),
       done: currentRecord ? true : false,
     };
   };
-  const data = [4, 3, 2, 1].map((n) => getDateData(n));
+  const data = [3, 2, 1, 0].map((n) => getDateData(n));
   const dispatch = useDispatch();
   const { createDailyRecordStatus, deleteDailyRecordStatus } = useSelector((state: RootState) => state.habits);
   return (
     <View style={styles.container}>
       {data.map((day, index) => {
-        const date = dayjs(day.date);
-        const currentCreateDailyRecordStatus = createDailyRecordStatus.find((s) => s.habitId === habitId && s.date === day.date)?.status;
+        const currentCreateDailyRecordStatus = createDailyRecordStatus.find((s) => s.habitId === habitId && s.date === day.dateString)?.status;
         const currentDeleteDailyRecordStatus = deleteDailyRecordStatus.find((s) => s.dailyRecordId === day.id)?.status;
         const dayLoading = currentCreateDailyRecordStatus === 'loading' || currentDeleteDailyRecordStatus === 'loading';
         if (dayLoading) {
@@ -64,14 +64,14 @@ export default function LastNDays({ habitId, records }: { habitId?: number, reco
                   }
                 } else {
                   if (habitId) {
-                    dispatch(createDailyRecordStart({ habitId, date: day.date }));
+                    dispatch(createDailyRecordStart({ habitId, date: day.dateString }));
                   }
                 }
               }}
             >
               <View style={[styles.daysContainer, day.done ? styles.daysContainerSelected : null]}>
-                <Text style={day.done ? styles.dayTextSelected : styles.dayText}>{date.utc().format('ddd')}</Text>
-                <Text style={day.done ? styles.dayTextSelected : styles.dayText}>{date.utc().date()}</Text>
+                <Text style={day.done ? styles.dayTextSelected : styles.dayText}>{day.date.format('ddd')}</Text>
+                <Text style={day.done ? styles.dayTextSelected : styles.dayText}>{day.date.date()}</Text>
               </View>
             </TouchableOpacity>
           );
