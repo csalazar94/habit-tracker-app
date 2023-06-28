@@ -1,13 +1,20 @@
 import { ActivityIndicator, Avatar, Card, ProgressBar, Text } from "react-native-paper";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ViewStyle } from "react-native";
 import LastNDays from "./last-n-days";
 import { Habit } from "../types/screens";
 
-export default function HabitCard({ habit, status }: { habit: Habit, status: string }) {
+export default function HabitCard({
+  onPress,
+  containerStyle,
+  habit,
+  status
+}: {
+  onPress?: () => void,
+  containerStyle: ViewStyle,
+  habit: Habit,
+  status: string
+}) {
   const styles = StyleSheet.create({
-    container: {
-      margin: 3,
-    },
     contentContainer: {
       flex: 1,
       gap: 10,
@@ -70,7 +77,10 @@ export default function HabitCard({ habit, status }: { habit: Habit, status: str
   };
 
   return (
-    <Card style={styles.container}>
+    <Card
+      onPress={onPress}
+      style={containerStyle}
+    >
       <Card.Content style={styles.contentContainer}>
         <View style={styles.headerContainer}>
           <Avatar.Icon size={36} icon={habit.habitCategory.icon} />

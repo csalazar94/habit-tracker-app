@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TextInput, Text, Button, HelperText } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
@@ -67,16 +67,19 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
     },
   });
 
+  const progress = useMemo(() => Math.random(), []);
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <HabitCard
+          containerStyle={{ margin: 5 }}
           habit={{
             name: habitName,
             frequency,
             target: Number(target),
-            progress: Math.random(),
-            current: Math.random(),
+            progress,
+            current: progress,
             dailyRecords: [],
             habitCategory: {
               id: category,
@@ -86,6 +89,7 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
               updatedAt: new Date(),
             },
           }}
+          status={''}
         />
         <Text variant='titleLarge'>Crear hábito</Text>
         <DropDown

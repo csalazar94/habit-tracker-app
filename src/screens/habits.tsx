@@ -35,7 +35,7 @@ export default function HabitsScreen({ navigation }: HabitsProps) {
       right: 20,
     },
     itemContainer: {
-      paddingHorizontal: 20,
+      marginHorizontal: 20,
     },
   });
 
@@ -53,12 +53,12 @@ export default function HabitsScreen({ navigation }: HabitsProps) {
         renderItem={({ item }: { item: Habit }) => {
           const status = findOneStatus.find((s) => s.habitId === item.id)?.status || '';
           return (
-            <TouchableOpacity
-              style={styles.itemContainer}
-              onPress={() => navigation.navigate('Habit', { habit: item })}
-            >
-              <HabitCard habit={item} status={status} />
-            </TouchableOpacity>
+            <HabitCard
+              onPress={() => { navigation.navigate('Habit', { habit: item }) }}
+              containerStyle={styles.itemContainer}
+              habit={item}
+              status={status}
+            />
           );
         }}
         data={habits}

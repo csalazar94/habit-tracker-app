@@ -7,7 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { createDailyRecordStart, deleteDailyRecordStart } from "../storage/habits/reducer";
 import { RootState } from "../storage/store";
 
-export default function LastNDays({ habitId, records }: { habitId?: number, records: DailyRecord[] }) {
+export default function LastNDays({
+  habitId,
+  records
+}: {
+  habitId?: number,
+  records: DailyRecord[]
+}) {
   const theme = useTheme();
   const styles = StyleSheet.create({
     container: {
