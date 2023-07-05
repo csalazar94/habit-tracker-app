@@ -18,8 +18,8 @@ export default function MyCalendarDay(
     year: number,
     month: number
   }) {
-  const dailyRecord = useSelector((state: RootState) => state.habits.habits.find((habit) => habit.id === habitId)?.dailyRecords.find((dailyRecord) => dayjs(dailyRecord.date).format('YYYY-MM-DD') === day.format('YYYY-MM-DD')));
-  const createStatus = useSelector((state: RootState) => state.habits.createDailyRecordStatus.find((s) => s.habitId === habitId && dayjs(s.date).format('YYYY-MM-DD') === day.format('YYYY-MM-DD'))?.status || '');
+  const dailyRecord = useSelector((state: RootState) => state.habits.habits.find((habit) => habit.id === habitId)?.dailyRecords.find((dailyRecord) => dailyRecord.date === day.format('YYYY-MM-DD')));
+  const createStatus = useSelector((state: RootState) => state.habits.createDailyRecordStatus.find((s) => s.habitId === habitId && s.date === day.format('YYYY-MM-DD'))?.status || '');
   const deleteStatus = useSelector((state: RootState) => state.habits.deleteDailyRecordStatus.find((s) => s.dailyRecordId === dailyRecord?.id)?.status || '');
   const isLoading = createStatus === 'loading' || deleteStatus === 'loading';
   const dispatch = useDispatch();

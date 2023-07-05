@@ -44,7 +44,7 @@ export default function LastNDays({
     return {
       id: currentRecord?.id,
       date: currentDate.subtract(n, 'day'),
-      dateString: currentDate.subtract(n, 'day').toISOString(),
+      dateString: currentDate.subtract(n, 'day').format('YYYY-MM-DD'),
       done: currentRecord ? true : false,
     };
   };
