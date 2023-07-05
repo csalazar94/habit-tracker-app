@@ -1,7 +1,6 @@
 import { IconButton, useTheme } from "react-native-paper";
 import { StyleSheet, View, VirtualizedList } from "react-native";
 import HabitCard from "../components/habit-card";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { Habit, HabitsProps } from "../types/screens";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../storage/store";
@@ -54,7 +53,7 @@ export default function HabitsScreen({ navigation }: HabitsProps) {
           const status = findOneStatus.find((s) => s.habitId === item.id)?.status || '';
           return (
             <HabitCard
-              onPress={() => { navigation.navigate('Habit', { habit: item }) }}
+              onPress={() => { navigation.navigate('Habit', { habitId: item.id }) }}
               containerStyle={styles.itemContainer}
               habit={item}
               status={status}

@@ -8,7 +8,7 @@ type DailyRecord = {
 };
 
 type Habit = {
-  id?: number;
+  id: number;
   name: string;
   frequency: string;
   target: number;
@@ -21,7 +21,7 @@ type Habit = {
 type HabitsStackParamList = {
   Habits: undefined;
   AddHabit: undefined;
-  Habit: { habit: Habit };
+  Habit: { habitId: number };
 };
 type HabitsProps = NativeStackScreenProps<HabitsStackParamList, 'Habits'>;
 type AddHabitProps = NativeStackScreenProps<HabitsStackParamList, 'AddHabit'>;
