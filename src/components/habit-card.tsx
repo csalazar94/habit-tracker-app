@@ -2,6 +2,7 @@ import { ActivityIndicator, Avatar, Card, ProgressBar, Text } from "react-native
 import { StyleSheet, View, ViewStyle } from "react-native";
 import LastNDays from "./last-n-days";
 import { Habit } from "../types/screens";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function HabitCard({
   onPress,
@@ -16,6 +17,7 @@ export default function HabitCard({
 }) {
   const styles = StyleSheet.create({
     contentContainer: {
+      marginTop: 10,
       flex: 1,
       gap: 10,
     },
@@ -43,7 +45,7 @@ export default function HabitCard({
       marginBottom: 5,
     },
     actionsContainer: {
-      marginTop: 10,
+      margin: 10,
       flexDirection: 'row',
       justifyContent: 'flex-end',
       alignItems: 'center',
@@ -78,34 +80,39 @@ export default function HabitCard({
 
   return (
     <Card
-      onPress={onPress}
       style={containerStyle}
     >
-      <Card.Content style={styles.contentContainer}>
-        <View style={styles.headerContainer}>
-          <Avatar.Icon size={36} icon={habit.habitCategory.icon} />
-          <View style={styles.titleContainer}>
-            <Text variant="titleMedium">{habit.name}</Text>
-            {
-              status === 'loading'
-                ? <ActivityIndicator />
-                : <Text>{Math.round(habit.progress * 100)}%</Text>
-            }
-          </View>
-        </View>
-        <View style={styles.subContentContainer}>
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.targetText}>{getTargetText()}</Text>
-            <ProgressBar style={styles.progress} progress={habit.progress} indeterminate={status === 'loading'} />
-            <View style={styles.actionsContainer}>
-              <LastNDays
-                habitId={habit.id}
-                records={habit.dailyRecords}
-              />
+      <TouchableOpacity
+        onPress={onPress}
+      >
+        <Card.Content
+          style={styles.contentContainer}
+        >
+          <View style={styles.headerContainer}>
+            <Avatar.Icon size={36} icon={habit.habitCategory.icon} />
+            <View style={styles.titleContainer}>
+              <Text variant="titleMedium">{habit.name}</Text>
+              {
+                status === 'loading'
+                  ? <ActivityIndicator />
+                  : <Text>{Math.round(habit.progress * 100)}%</Text>
+              }
             </View>
           </View>
-        </View>
-      </Card.Content>
+          <View style={styles.subContentContainer}>
+            <View style={styles.descriptionContainer}>
+              <Text style={styles.targetText}>{getTargetText()}</Text>
+              <ProgressBar style={styles.progress} progress={habit.progress} indeterminate={status === 'loading'} />
+            </View>
+          </View>
+        </Card.Content>
+      </TouchableOpacity>
+      <Card.Actions style={styles.actionsContainer}>
+        <LastNDays
+          habitId={habit.id}
+          records={habit.dailyRecords}
+        />
+      </Card.Actions>
     </Card>
   );
 }
