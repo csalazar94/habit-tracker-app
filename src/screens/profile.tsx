@@ -1,5 +1,5 @@
-import { Button, HelperText, Text, TextInput } from "react-native-paper";
-import { StyleSheet, View } from "react-native";
+import { Button, HelperText, TextInput } from "react-native-paper";
+import { Pressable, StyleSheet, View } from "react-native";
 import { useState } from "react";
 import DatePicker from "react-native-date-picker";
 import DropDown from "react-native-paper-dropdown";
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 });
 
 export default function ProfileScreen() {
-  const { user, updateStatus } = useSelector((state: RootState) => state.users);
+  const { user, updateStatus, updateError } = useSelector((state: RootState) => state.users);
   const [firstName, setFirstName] = useState(user?.firstName || '');
   const [lastName, setLastName] = useState(user?.lastName || '');
   const [email, setEmail] = useState(user?.email || '');
@@ -53,13 +53,26 @@ export default function ProfileScreen() {
         firstName,
         lastName,
         gender,
-        dob: dayjs(dob).toISOString(),
+        dob: dayjs(dob).format('YYYY-MM-DD'),
         weight,
         height,
       };
       dispatch(updateStart({ userId, ...updatedUser }));
     }
   };
+
+  const hasErrors = (property: string) => {
+    return updateStatus === 'error' && Array.isArray(updateError) && updateError.findIndex((e) => e.property === property) !== -1;
+  }
+
+  const getErrorsMessage = (property: string) => {
+    if (!hasErrors(property)) return;
+    return (
+      <HelperText type="error">
+        {(updateError as { property: string, messages: [] }[]).find((e) => e.property === property)?.messages.join('\n')}
+      </HelperText>
+    );
+  }
 
   return (
     <View style={styles.formContainer}>
@@ -69,12 +82,14 @@ export default function ProfileScreen() {
         value={firstName}
         onChangeText={(text) => setFirstName(text)}
       />
+      {getErrorsMessage('firstName')}
       <TextInput
         mode="outlined"
         label={'Apellido'}
         value={lastName}
         onChangeText={(text) => setLastName(text)}
       />
+      {getErrorsMessage('lastName')}
       <TextInput
         mode="outlined"
         label={'Email'}
@@ -82,6 +97,7 @@ export default function ProfileScreen() {
         onChangeText={(text) => setEmail(text)}
         editable={false}
       />
+      {getErrorsMessage('email')}
       <DropDown
         label='Género'
         mode='outlined'
@@ -92,13 +108,20 @@ export default function ProfileScreen() {
         setValue={setGender}
         list={genderOptions}
       />
-      <TextInput
-        label={'Fecha de nacimiento'}
-        mode='outlined'
-        value={dayjs(dob).format('DD/MM/YYYY')}
-        onPressIn={() => setOpenDobDatePicker(true)}
-        editable={false}
-      />
+      {getErrorsMessage('gender')}
+      <Pressable
+        onPress={() => {
+          setOpenDobDatePicker(true);
+        }}
+      >
+        <TextInput
+          label={'Fecha de nacimiento'}
+          mode='outlined'
+          value={dayjs(dob).format('DD/MM/YYYY')}
+          editable={false}
+        />
+      </Pressable>
+      {getErrorsMessage('dob')}
       <DatePicker
         modal
         mode="date"
@@ -117,6 +140,7 @@ export default function ProfileScreen() {
         value={weight === 0 ? '' : weight.toString()}
         onChangeText={(text) => setWeight(Number(text.replace(/[^0-9]/g, '')))}
       />
+      {getErrorsMessage('weight')}
       <TextInput
         label={'Altura (cms)'}
         keyboardType="numeric"
@@ -124,11 +148,14 @@ export default function ProfileScreen() {
         value={height === 0 ? '' : height.toString()}
         onChangeText={(text) => setHeight(Number(text.replace(/[^0-9]/g, '')))}
       />
-      {updateStatus === 'error' && (
-        <HelperText type="error" visible={updateStatus === 'error'}>
-          Ha ocurrido un error
-        </HelperText>
-      )}
+      {getErrorsMessage('height')}
+      {
+        updateStatus === 'error' && (typeof updateError === 'string') && (
+          <HelperText type="error" visible={updateStatus === 'error' && (typeof updateError === 'string')}>
+            {String(updateError)}
+          </HelperText>
+        )
+      }
       <Button
         mode={'contained'}
         onPress={handleSave}

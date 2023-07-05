@@ -23,20 +23,15 @@ async function register(firstName: string, lastName: string, email: string, pass
 }
 
 async function update(userId: number, firstName: string, lastName: string, gender: string, dob: string, weight: number, height: number): Promise<User> {
-  const response = await fetch(`${url}/users/${userId}`, {
-    method: 'PATCH',
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
+  const response = await axios.patch(`${url}/users/${userId}`, {
       firstName,
       lastName,
       gender,
       dob,
       weight,
       height,
-    }),
   });
-  if (response.ok) return response.json();
-  throw new Error('Update user failed');
+  return response.data;
 }
 
 export default {

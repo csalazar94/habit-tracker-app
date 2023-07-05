@@ -8,7 +8,7 @@ export interface User {
   email: string;
   password: string;
   gender: string;
-  dob: Date;
+  dob: string;
   weight: number;
   height: number;
   createdAt: Date;
@@ -21,12 +21,14 @@ const initialState: {
   registerStatus: string,
   registerError: { property: string, messages: [] }[] | string,
   updateStatus: string,
+  updateError: { property: string, messages: [] }[] | string,
 } = {
   user: null,
   loginStatus: '',
   registerStatus: '',
   registerError: [],
   updateStatus: '',
+  updateError: [],
 };
 
 export const usersSlice = createSlice({
@@ -72,8 +74,9 @@ export const usersSlice = createSlice({
     }>) => {
       state.updateStatus = 'loading';
     },
-    updateFailed: (state) => {
+    updateFailed: (state, action: PayloadAction<[] | string>) => {
       state.updateStatus = 'error';
+      state.updateError = action.payload;
     },
     updateSuccess: (state, action: PayloadAction<User>) => {
       state.user = action.payload;

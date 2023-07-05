@@ -56,11 +56,20 @@ function* update(action: PayloadAction<{
   height: number,
 }>) {
   try {
-    const user: User = yield call(usersService.update, action.payload.userId, action.payload.lastName, action.payload.firstName, action.payload.gender, action.payload.dob, action.payload.weight, action.payload.height);
+    const user: User = yield call(usersService.update, action.payload.userId, action.payload.firstName, action.payload.lastName, action.payload.gender, action.payload.dob, action.payload.weight, action.payload.height);
     yield put(updateSuccess(user));
-  } catch (e) {
-    console.error(e);
-    yield put(updateFailed());
+  } catch (error) {
+    console.error(error);
+    if (isAxiosError(error)) {
+      const data = error.response?.data;
+      if (error.response?.status === 400 && Array.isArray(data.message)) {
+        yield put(updateFailed(data.message));
+      } else {
+        yield put(updateFailed('Ha ocurrido un error.'));
+      }
+    } else {
+      yield put(updateFailed('Ha ocurrido un error.'));
+    }
   }
 }
 
