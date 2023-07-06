@@ -25,41 +25,41 @@ export default function MyCalendarDay(
   const dispatch = useDispatch();
   const theme = useTheme();
   return (
-    <TouchableOpacity
-      onLongPress={() => {
-        if (dailyRecord) {
-          dispatch(deleteDailyRecordStart({
-            dailyRecordId: dailyRecord.id,
-          }));
-        } else {
-          dispatch(createDailyRecordStart({
-            habitId,
-            date: day.format('YYYY-MM-DD'),
-          }));
-        }
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: isLoading
+          ? 'transparent'
+          : dailyRecord
+            ? day.format('YYYYMM') !== dayjs().year(year).month(month).format('YYYYMM')
+              ? theme.colors.secondary
+              : theme.colors.primary
+            : 'transparent',
+        borderRadius: 20,
+        height: 40,
+        width: 40,
       }}
+      key={day.format('YYYY-MM-DD')}
     >
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: isLoading
-            ? 'transparent'
-            : dailyRecord
-              ? day.format('YYYYMM') !== dayjs().year(year).month(month).format('YYYYMM')
-                ? theme.colors.secondary
-                : theme.colors.primary
-              : 'transparent',
-          borderRadius: 20,
-          height: 40,
-          width: 40,
-        }}
-        key={day.format('YYYY-MM-DD')}
-      >
-        {
-          isLoading
-            ? <ActivityIndicator />
-            : <Text
+      {
+        isLoading
+          ? <ActivityIndicator />
+          : <TouchableOpacity
+            onLongPress={() => {
+              if (dailyRecord) {
+                dispatch(deleteDailyRecordStart({
+                  dailyRecordId: dailyRecord.id,
+                }));
+              } else {
+                dispatch(createDailyRecordStart({
+                  habitId,
+                  date: day.format('YYYY-MM-DD'),
+                }));
+              }
+            }}
+          >
+            <Text
               style={{
                 color: dailyRecord
                   ? day.format('YYYYMM') !== dayjs().year(year).month(month).format('YYYYMM')
@@ -73,8 +73,8 @@ export default function MyCalendarDay(
             >
               {day.format('DD')}
             </Text>
-        }
-      </View>
-    </TouchableOpacity>
+          </TouchableOpacity>
+      }
+    </View>
   );
 }

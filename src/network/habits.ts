@@ -31,7 +31,8 @@ async function create(userId: number, habitCategoryId: number, name: string, fre
       target,
     }),
   });
-  if (response.ok) return response.json();
+  const data = await response.json();
+  if (response.ok) return data;
   throw new Error('Create habit failed');
 }
 
