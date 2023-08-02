@@ -65,12 +65,12 @@ export const usersSlice = createSlice({
     },
     updateStart: (state, _action: PayloadAction<{
       userId: number,
-      firstName: string,
-      lastName: string,
-      gender: string,
-      dob: string,
-      weight: number,
-      height: number,
+      firstName?: string,
+      lastName?: string,
+      gender?: string,
+      dob?: string,
+      weight?: number,
+      height?: number,
     }>) => {
       state.updateStatus = 'loading';
     },

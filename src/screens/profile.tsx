@@ -49,15 +49,15 @@ export default function ProfileScreen() {
       dispatch(logout());
     } else {
       const userId = user.id;
-      const updatedUser = {
-        firstName,
-        lastName,
-        gender,
-        dob: dayjs(dob).format('YYYY-MM-DD'),
-        weight,
-        height,
-      };
-      dispatch(updateStart({ userId, ...updatedUser }));
+      dispatch(updateStart({
+        userId,
+        firstName: firstName || undefined,
+        lastName: lastName || undefined,
+        gender: gender || undefined,
+        dob: dayjs(dob).format('YYYY-MM-DD') || undefined,
+        weight: weight || undefined,
+        height: height || undefined,
+      }));
     }
   };
 
