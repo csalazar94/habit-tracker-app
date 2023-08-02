@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Habit } from "../storage/habits/reducer";
 import { DailyRecord } from "../types/screens";
 import { url } from "./config";
@@ -21,19 +22,13 @@ async function findAll(userId: number): Promise<Habit[]> {
 }
 
 async function create(userId: number, habitCategoryId: number, name: string, frequency: string, target: number): Promise<Habit[]> {
-  const response = await fetch(`${url}/users/${userId}/habits`, {
-    method: 'POST',
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      habitCategoryId,
-      name,
-      frequency,
-      target,
-    }),
+  const response = await axios.post(`${url}/users/${userId}/habits`, {
+    habitCategoryId,
+    name,
+    frequency,
+    target,
   });
-  const data = await response.json();
-  if (response.ok) return data;
-  throw new Error('Create habit failed');
+  return response.data;
 }
 
 async function createDailyRecord(habitId: number, date: string): Promise<DailyRecord> {

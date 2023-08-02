@@ -19,6 +19,7 @@ const initialState: {
   findOneStatus: { habitId: number, status: string }[],
   findAllStatus: string,
   createStatus: string,
+  createError: { property: string, messages: [] }[] | string,
   createDailyRecordStatus: { habitId: number, date: string, status: string }[],
   deleteDailyRecordStatus: { dailyRecordId: number, status: string }[],
 } = {
@@ -26,6 +27,7 @@ const initialState: {
   findOneStatus: [],
   findAllStatus: '',
   createStatus: '',
+  createError: [],
   createDailyRecordStatus: [],
   deleteDailyRecordStatus: [],
 };
@@ -96,8 +98,9 @@ export const habitsSlice = createSlice({
     }>) => {
       state.createStatus = 'loading';
     },
-    createFailed: (state) => {
+    createFailed: (state, action: PayloadAction<[] | string>) => {
       state.createStatus = 'error';
+      state.createError = action.payload;
     },
     createSuccess: (state, action: PayloadAction<Habit>) => {
       state.habits.push(action.payload);

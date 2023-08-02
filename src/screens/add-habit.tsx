@@ -15,7 +15,7 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
   const [showDropDownFrequency, setShowDropDownFrequency] = useState(false);
   const [frequency, setFrequency] = useState('weekly');
   const [showDropDownCategory, setShowDropDownCategory] = useState(false);
-  const [category, setCategory] = useState(1);
+  const [category, setCategory] = useState('');
   const [target, setTarget] = useState(0);
 
   const dispatch = useDispatch();
@@ -23,13 +23,20 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
     dispatch(findAllStart());
   }, []);
 
-  const { createStatus } = useSelector((state: RootState) => state.habits);
+  const { createStatus, createError } = useSelector((state: RootState) => state.habits);
   useEffect(() => {
     if (createStatus === 'ok') {
       navigation.goBack();
       dispatch(createReset());
     }
   }, [createStatus]);
+
+  const { findAllStatus, habitCategories } = useSelector((state: RootState) => state.habitCategories);
+  useEffect(() => {
+    if (findAllStatus === 'ok') {
+      setCategory(habitCategories[0].id);
+    }
+  }, [findAllStatus]);
 
   const { user } = useSelector((state: RootState) => state.users);
 
@@ -47,7 +54,6 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
       value: 'yearly',
     },
   ];
-  const { habitCategories } = useSelector((state: RootState) => state.habitCategories);
   const categories = habitCategories.map((hc) => {
     return { label: hc.name, value: hc.id };
   });
@@ -68,6 +74,19 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
   });
 
   const progress = useMemo(() => Math.random(), []);
+
+  const hasErrors = (property: string) => {
+    return createStatus === 'error' && Array.isArray(createError) && createError.findIndex((e) => e.property === property) !== -1;
+  }
+
+  const getErrorsMessage = (property: string) => {
+    if (!hasErrors(property)) return;
+    return (
+      <HelperText type="error">
+        {(createError as { property: string, messages: [] }[]).find((e) => e.property === property)?.messages.join('\n')}
+      </HelperText>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -102,12 +121,14 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
           setValue={setCategory}
           list={categories}
         />
+        {getErrorsMessage('habitCategoryId')}
         <TextInput
           mode="outlined"
           value={habitName}
           onChangeText={setHabitName}
           label="Nombre del hábito"
         />
+        {getErrorsMessage('name')}
         <TextInput
           mode="outlined"
           label="Objetivo"
@@ -115,6 +136,7 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
           value={target === 0 ? '' : target.toString()}
           onChangeText={(text) => setTarget(Number(text.replace(/[^0-9]/g, '')))}
         />
+        {getErrorsMessage('target')}
         <DropDown
           label='Frecuencia'
           mode='outlined'
@@ -125,11 +147,14 @@ export default function AddHabitScreen({ navigation }: AddHabitProps) {
           setValue={setFrequency}
           list={frequencies}
         />
-        {createStatus === 'error' && (
-          <HelperText type="error" visible={createStatus === 'error'}>
-            Ha ocurrido un error
-          </HelperText>
-        )}
+        {getErrorsMessage('frequency')}
+        {
+          createStatus === 'error' && (typeof createError === 'string') && (
+            <HelperText type="error" visible={createStatus === 'error' && (typeof createError === 'string')}>
+              {String(createError)}
+            </HelperText>
+          )
+        }
         <Button
           mode='contained'
           onPress={onSave}

@@ -1,4 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
+import { isAxiosError } from 'axios';
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import habitsService from '../../network/habits';
 import { DailyRecord } from '../../types/screens';
@@ -43,9 +44,18 @@ function* create(action: PayloadAction<{
   try {
     const habit: Habit = yield call(habitsService.create, action.payload.userId, action.payload.habitCategoryId, action.payload.name, action.payload.frequency, action.payload.target);
     yield put(createSuccess(habit));
-  } catch (e) {
-    console.error(e);
-    yield put(createFailed());
+  } catch (error) {
+    console.error(error);
+    if (isAxiosError(error)) {
+      const data = error.response?.data;
+      if (error.response?.status === 400 && Array.isArray(data.message)) {
+        yield put(createFailed(data.message));
+      } else {
+        yield put(createFailed('Ha ocurrido un error.'));
+      }
+    } else {
+      yield put(createFailed('Ha ocurrido un error.'));
+    }
   }
 }
 
